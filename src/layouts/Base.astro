@@ -5,7 +5,7 @@ import Entete from '../components/Entete.astro';
 import PiedDePage from '../components/PiedDePage.astro';
 import { absolu, ressource, STUDIO } from '../config';
 import commun from '../i18n/commun';
-import { DOMAINES, LANGUES, autre, type Langue, type Page } from '../i18n/routes';
+import { DOMAINES, LANGUES, SANS_INDEX, autre, type Langue, type Page } from '../i18n/routes';
 
 interface Props {
   titre: string;
@@ -14,19 +14,24 @@ interface Props {
   /** Identifiant de la page dans la table des routes ; absent pour la 404. */
   page?: Page;
   slug?: string;
-  /** Ajouté tel quel après le titre. Laisser vide pour la page d'accueil. */
+  /** Ajoute « · Moamind Solutions » après le titre. Faux quand le titre porte déjà la marque ou doit rester court. */
   suffixe?: boolean;
-  /** Faux pour les pages que les moteurs ne doivent pas indexer (404). */
+  /** Faux pour la 404 ; les pages de SANS_INDEX ne sont jamais indexées. */
   indexer?: boolean;
+  /** Données structurées schema.org de la page (voir src/lib/donnees-structurees.ts). */
+  donnees?: object;
 }
 
-const { titre, description, langue, page, slug, suffixe = true, indexer = true } = Astro.props;
+const { titre, description, langue, page, slug, suffixe = true, indexer = true, donnees } = Astro.props;
 const c = commun[langue];
 const titreComplet = suffixe ? `${titre} · ${STUDIO.nom}` : titre;
-/** Adresse complète de la page dans une langue, avec la barre finale sous laquelle Apache sert un dossier. */
-const version = (l: Langue) => absolu(page!, l, slug).replace(/\/?$/, '/');
+const indexable = indexer && !(page && SANS_INDEX.includes(page));
+/** Adresse complète de la page dans une langue. */
+const version = (l: Langue) => absolu(page!, l, slug);
 const canonique = page ? version(langue) : undefined;
 const image = new URL(ressource('/og.png'), DOMAINES[langue]);
+/** `<` échappé : un texte contenant `</script>` ne peut pas fermer la balise. */
+const json = donnees && JSON.stringify(donnees).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
@@ -36,7 +41,7 @@ const image = new URL(ressource('/og.png'), DOMAINES[langue]);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{titreComplet}</title>
     <meta name="description" content={description} />
-    {!indexer && <meta name="robots" content="noindex" />}
+    {!indexable && <meta name="robots" content="noindex" />}
     {canonique && <link rel="canonical" href={canonique} />}
     {page && LANGUES.map((l) => <link rel="alternate" hreflang={l} href={version(l)} />)}
     {page && <link rel="alternate" hreflang="x-default" href={version('fr')} />}
@@ -55,6 +60,7 @@ const image = new URL(ressource('/og.png'), DOMAINES[langue]);
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    {json && <script is:inline type="application/ld+json" set:html={json} />}
 
     <slot name="tete" />
   </head>

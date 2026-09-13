@@ -9,6 +9,7 @@ import AppelFinal from '../components/AppelFinal.astro';
 import Icone from '../components/Icone.astro';
 import { lien, STUDIO } from '../config';
 import { ecran } from '../lib/ecrans';
+import { accueil as donneesAccueil } from '../lib/donnees-structurees';
 import { eventail, rangee } from '../data/produits';
 import commun from '../i18n/commun';
 import textes from '../i18n/accueil';
@@ -19,6 +20,7 @@ const { langue } = Astro.props;
 const t = textes[langue];
 const c = commun[langue];
 const v = t.methode.visuels;
+const donnees = donneesAccueil(langue, { nom: STUDIO.nom, ville: STUDIO.ville, description: c.description, slogan: `${c.accroche}.` });
 
 const [derriere, devant] = eventail;
 /** Icônes des services, dans l'ordre de `t.services.items`. */
@@ -33,7 +35,7 @@ const inclinaisons = [
   { w: 210, left: '66%', t: 'rotateY(-18deg) rotateZ(5deg) translateY(30px)' },
 ];
 ---
-<Base titre={`${STUDIO.nom} — ${c.accroche}`} description={c.description} suffixe={false} langue={langue} page="accueil">
+<Base titre={c.titreAccueil} description={c.description} langue={langue} page="accueil" donnees={donnees}>
   <Bande hauteur="780px" biais="58%" reserve="300px">
     <div class="hero w">
       <div>

@@ -13,12 +13,12 @@ npm install
 npm run dev       # http://localhost:4321/ (français) et /en/ (anglais)
 npm run build     # génère dist/
 npm test          # typographie, anonymisation, données des réalisations
-npm run verifier  # contrôles dans Chrome (lancer `npm run preview` avant)
+npm run verifier  # contrôles dans Chrome (lancer `npm run dev` avant)
 ```
 
 `npm run verifier` parcourt les onze pages à 320, 375, 390, 768, 1024 et
 1440 px : aucun défilement horizontal, aucun mot isolé en fin de ligne, liens
-internes valides, et les interactions (menu mobile, terrains dépliables,
+internes valides et terminés par une barre (sans elle, Apache redirige), et les interactions (menu mobile, terrains dépliables,
 formulaire, ancres). Il s'arrête en erreur au moindre échec.
 
 ## À remplir avant la mise en ligne

@@ -2,7 +2,7 @@ import type { Langue } from './routes';
 import type { Titre } from './types';
 
 const fr = {
-  meta: { titre: 'Méthode', description: 'Écouter, cadrer, valider, construire. La méthode de Moamind Solutions, avec ses livrables, ses délais et ses engagements.' },
+  meta: { titre: 'Méthode : du cadrage produit au développement', description: 'Écouter, cadrer, valider, construire. La méthode de Moamind Solutions, avec ses livrables, ses délais et ses engagements.' },
   etiquette: 'La méthode',
   titre: { gras: "Comprendre d'abord", leger: 'construire ensuite.' } as Titre,
   sous: "La plupart des applications qui échouent ont été très bien développées. Elles répondaient simplement aux mauvaises questions. Voilà comment on s'assure que ce ne sera pas la vôtre.",
@@ -105,7 +105,7 @@ const fr = {
 };
 
 const en: typeof fr = {
-  meta: { titre: 'Method', description: "Listen, scope, validate, build: the Moamind Solutions method, with its deliverables, timelines and commitments." },
+  meta: { titre: 'Method: from product scoping to development', description: "Listen, scope, validate, build: the Moamind Solutions method, with its deliverables, timelines and commitments." },
   etiquette: 'The method',
   titre: { gras: 'Understand first', leger: 'build second.' },
   sous: "Most apps that fail were built very well. They just answered the wrong questions. Here's how I make sure yours won't be one of them.",

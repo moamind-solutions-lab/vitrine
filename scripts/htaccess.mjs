@@ -10,7 +10,7 @@ export const BIENTOT = true;
 /** Redirections des pages de `de` vers leur équivalent sur le domaine de `vers`. */
 export function correspondances(de, vers) {
   return Object.values(ROUTES).map((route) => {
-    const source = route[de].replace(/^\//, '').replace(':slug', '([^/]+)');
+    const source = route[de].replace(/^\/|\/$/g, '').replace(':slug', '([^/]+)');
     const motif = source ? `^${source}/?$` : '^$';
     return `  RewriteRule ${motif} ${DOMAINES[vers]}${route[vers].replace(':slug', '$1')} [R=302,L]`;
   });

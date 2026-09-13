@@ -2,6 +2,8 @@ import type { Langue } from './routes';
 
 const fr = {
   accroche: 'Le produit avant le code',
+  /** Titre de l'onglet et du résultat Google de l'accueil : ce que les gens cherchent, pas l'accroche. */
+  titreAccueil: "Conception d'applications web et mobiles",
   description: "Conception et développement d'applications web et mobiles. On cadre le problème, vous validez les écrans, rien ne se construit avant.",
   sautContenu: 'Aller au contenu',
   /** Complète le nom du studio dans le nom accessible du logo : « Moamind Solutions, accueil ». */
@@ -25,6 +27,7 @@ const fr = {
 
 const en: typeof fr = {
   accroche: 'Product before code',
+  titreAccueil: 'Web and mobile app design and development',
   description: 'Design and development of web and mobile apps. The problem gets scoped, you approve the screens, and nothing gets built before that.',
   sautContenu: 'Skip to content',
   accueil: 'home',

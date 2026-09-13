@@ -3,8 +3,8 @@ import type { Titre } from './types';
 
 const fr = {
   meta: {
-    titre: 'Réalisations',
-    description: "Des applications conçues et développées de bout en bout : le problème de départ, ce qu'elles changent pour ceux qui s'en servent, et les écrans qui en sont sortis.",
+    titre: 'Réalisations : applications web et mobiles',
+    description: "Des applications conçues et développées de bout en bout : le problème de départ, ce qu'elles changent pour ceux qui s'en servent, et leurs écrans.",
   },
   etiquette: 'Réalisations',
   titre: { gras: 'Du besoin', leger: "à l'application." } as Titre,
@@ -33,7 +33,7 @@ const fr = {
 
 const en: typeof fr = {
   meta: {
-    titre: 'Work',
+    titre: 'Work: web and mobile apps',
     description: 'Apps designed and built end to end: the problem to start with, what they change for the people who use them, and the screens that came out of it.',
   },
   etiquette: 'Work',

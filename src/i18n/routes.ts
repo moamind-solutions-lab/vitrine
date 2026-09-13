@@ -13,16 +13,23 @@ export const DOMAINES: Record<Langue, string> = { fr: 'https://moamind-solutions
 
 export type Page = 'accueil' | 'methode' | 'realisations' | 'etude' | 'experience' | 'contact' | 'merci' | 'mentions';
 
+/**
+ * Toujours avec la barre finale : Apache sert chaque page comme un dossier et redirige (301)
+ * l'adresse sans barre. Un lien sans barre coûterait une redirection à chaque clic.
+ */
 export const ROUTES: Record<Page, Record<Langue, string>> = {
   accueil: { fr: '/', en: '/' },
-  methode: { fr: '/methode', en: '/method' },
-  realisations: { fr: '/realisations', en: '/work' },
-  etude: { fr: '/realisations/:slug', en: '/work/:slug' },
-  experience: { fr: '/experience', en: '/experience' },
-  contact: { fr: '/contact', en: '/contact' },
-  merci: { fr: '/merci', en: '/thank-you' },
-  mentions: { fr: '/mentions-legales', en: '/legal-notice' },
+  methode: { fr: '/methode/', en: '/method/' },
+  realisations: { fr: '/realisations/', en: '/work/' },
+  etude: { fr: '/realisations/:slug/', en: '/work/:slug/' },
+  experience: { fr: '/experience/', en: '/experience/' },
+  contact: { fr: '/contact/', en: '/contact/' },
+  merci: { fr: '/merci/', en: '/thank-you/' },
+  mentions: { fr: '/mentions-legales/', en: '/legal-notice/' },
 };
+
+/** Pages que les moteurs n'indexent pas : `noindex`, et absentes des plans du site. */
+export const SANS_INDEX: readonly Page[] = ['merci'];
 
 export function chemin(page: Page, langue: Langue, slug?: string): string {
   const modele = ROUTES[page][langue];

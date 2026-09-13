@@ -6,7 +6,7 @@
  */
 import { copyFileSync, cpSync, existsSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
-import { DOMAINES } from '../src/i18n/routes.ts';
+import { DOMAINES, SANS_INDEX, chemin } from '../src/i18n/routes.ts';
 import { htaccess } from './htaccess.mjs';
 
 const DIST = resolve(import.meta.dirname, '../dist');
@@ -29,7 +29,9 @@ function pages(racine, dossier = racine) {
   });
 }
 
-const adresses = ['', ...pages(EN)].map((p) => `${DOMAINES.en}/${p ? `${p}/` : ''}`);
+// Les pages non indexées (noindex) n'ont rien à faire dans le plan du site.
+const horsPlan = SANS_INDEX.map((page) => chemin(page, 'en'));
+const adresses = ['', ...pages(EN)].map((p) => `/${p ? `${p}/` : ''}`).filter((a) => !horsPlan.includes(a)).map((a) => DOMAINES.en + a);
 writeFileSync(join(EN, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${adresses.map((a) => `  <url><loc>${a}</loc></url>`).join('\n')}
@@ -41,4 +43,4 @@ writeFileSync(join(EN, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${DOM
 writeFileSync(join(DIST, '.htaccess'), htaccess('fr'));
 writeFileSync(join(EN, '.htaccess'), htaccess('en'));
 
-console.log(`Domaines prêts : ${adresses.length} pages anglaises, .htaccess générés.`);
+console.log(`Domaines prêts : ${adresses.length} pages dans le plan du site anglais, .htaccess générés.`);

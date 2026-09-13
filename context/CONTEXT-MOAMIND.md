@@ -130,6 +130,8 @@ Décidées le 10 septembre 2026, elles s'appliquent à toute évolution du site.
    petit : la ligne de copyright du pied de page (« Basé à Bordeaux, au travail
    partout ») et la fiche de la page Expérience (« Bordeaux — les projets, eux,
    n'ont pas de frontière »). Jamais dans un titre, jamais dans le hero.
+   Seule exception, invisible à l'écran : les données structurées de l'accueil
+   déclarent Bordeaux comme ville du studio, pour les moteurs de recherche.
 7. **Le parcours ne se présente jamais comme un CV.** Pas de dates, pas de
    durées, pas d'employeurs nommés. La page Expérience montre des
    **terrains** : un milieu, ses mots-clés toujours visibles, et ses tâches en
@@ -270,6 +272,14 @@ pointillés, aucun texte en dégradé.
   https://moamind-solutions.fr, l'anglais sur https://moamind-solutions.com ; la
   langue du navigateur oriente vers le bon domaine, et le choix fait avec le
   sélecteur est retenu. Détails dans le README.
+- **Référencement** : le titre de chaque page (onglet, résultat Google) dit ce
+  que les gens cherchent (« Conception d'applications web et mobiles »), le H1
+  garde l'accroche. Titre complet de 70 caractères au plus, description de 160
+  au plus, vérifiés par `tests/seo.test.mjs`. Toutes les adresses finissent par
+  une barre (`src/i18n/routes.ts`) : Apache redirige l'adresse sans barre. Les
+  pages de `SANS_INDEX` (Message reçu) sont en `noindex` et hors des plans du
+  site. Données structurées (`src/lib/donnees-structurees.ts`) : organisation
+  et site sur l'accueil, fil d'Ariane sur les études de cas.
 
 ## Ce qui reste à fournir
 

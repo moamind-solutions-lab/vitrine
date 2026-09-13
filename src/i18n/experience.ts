@@ -2,7 +2,7 @@ import type { Langue } from './routes';
 import type { Titre } from './types';
 
 const fr = {
-  meta: { titre: 'Expérience', description: "Quinze ans à concevoir et construire des produits, du développement au pilotage, en petite structure comme en grand groupe. Et ce que ça change concrètement pour votre projet." },
+  meta: { titre: 'Expérience : développement et pilotage produit', description: "Quinze ans à concevoir et construire des produits, du développement au pilotage, en petite structure comme en grand groupe. Et ce que ça change pour vous." },
   etiquette: 'À qui vous parlez',
   titre: { gras: 'Du code au produit', leger: 'le secret de la réussite.' } as Titre,
   sous: "<span translate=\"no\">Moamind Solutions</span> conçoit et développe des applications web et mobiles. Ce qui distingue la maison tient en une phrase : ce que je vends, c'est le temps passé à ne pas construire la mauvaise chose.",
@@ -125,7 +125,7 @@ const fr = {
 };
 
 const en: typeof fr = {
-  meta: { titre: 'Experience', description: 'Fifteen years designing and building products, from development to leadership, in small teams and large ones. And what that means, concretely, for your project.' },
+  meta: { titre: 'Experience: development and product leadership', description: 'Fifteen years designing and building products, from development to leadership, in small teams and large ones. And what that means, concretely, for your project.' },
   etiquette: "Who you're talking to",
   titre: { gras: 'From code to product', leger: 'the secret to success.' },
   sous: '<span translate="no">Moamind Solutions</span> designs and builds web and mobile apps. What sets it apart fits in one sentence: what you’re paying for is the time spent not building the wrong thing.',

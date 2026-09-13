@@ -12,8 +12,8 @@ import { join } from 'node:path';
 
 const RACINE = process.env.RACINE ?? 'http://localhost:4321';
 const TOUTES = [
-  '/', '/methode', '/realisations', '/realisations/chargeair', '/realisations/pilpoil', '/realisations/teamago', '/experience', '/contact', '/merci', '/mentions-legales', '/404',
-  '/en/', '/en/method', '/en/work', '/en/work/chargeair', '/en/work/pilpoil', '/en/work/teamago', '/en/experience', '/en/contact', '/en/thank-you', '/en/legal-notice', '/en/404',
+  '/', '/methode/', '/realisations/', '/realisations/chargeair/', '/realisations/pilpoil/', '/realisations/teamago/', '/experience/', '/contact/', '/merci/', '/mentions-legales/', '/404',
+  '/en/', '/en/method/', '/en/work/', '/en/work/chargeair/', '/en/work/pilpoil/', '/en/work/teamago/', '/en/experience/', '/en/contact/', '/en/thank-you/', '/en/legal-notice/', '/en/404',
 ];
 const anglaise = (page) => page.startsWith('/en/');
 const PAGES = process.argv.slice(2).length ? process.argv.slice(2) : TOUTES;
@@ -129,6 +129,9 @@ for (const page of PAGES) {
     if (s !== 200) morts.push(`${h} (${s})`);
   }
   verdict(morts.length === 0, `${page} : liens internes${morts.length ? ' morts → ' + morts.join(', ') : ''}`);
+  // En ligne, Apache redirige /methode vers /methode/ : un lien sans barre finale coûte une redirection.
+  const sansBarre = [...new Set(liens)].filter((h) => !/\/(#.*)?$/.test(h));
+  verdict(sansBarre.length === 0, `${page} : liens internes avec barre finale${sansBarre.length ? ' → ' + sansBarre.join(', ') : ''}`);
   const logo = await ev(`document.querySelector('.entete .logo')?.getAttribute('href')`);
   const attendu = anglaise(page) ? ['/en/'] : ['/'];
   verdict(attendu.includes(logo), `${page} : le logo mène à l'accueil de sa langue (${logo})`);
@@ -144,7 +147,7 @@ for (const page of PAGES) {
 
 // Interactions propres à certaines pages, indépendantes de la langue.
 await largeur(1440);
-for (const [methode, experience, contact, mentions, accueil] of [['/methode', '/experience', '/contact', '/mentions-legales', '/'], ['/en/method', '/en/experience', '/en/contact', '/en/legal-notice', '/en/']]) {
+for (const [methode, experience, contact, mentions, accueil] of [['/methode/', '/experience/', '/contact/', '/mentions-legales/', '/'], ['/en/method/', '/en/experience/', '/en/contact/', '/en/legal-notice/', '/en/']]) {
   if (PAGES.includes(methode)) {
     await aller(methode);
     const ancre = await ev(`document.querySelectorAll('a.marche')[2].hash`);

@@ -55,7 +55,7 @@ const fr = {
       id: 'cookies',
       court: 'Cookies',
       titre: "Cookies et mesure d'audience",
-      paragraphes: ["Ce site ne dépose aucun cookie et n'utilise aucun outil de mesure d'audience ni de traçage publicitaire. Aucune bannière de consentement n'est donc nécessaire."],
+      paragraphes: ["Le seul cookie de ce site retient la langue choisie avec le sélecteur de langue, pendant un an. Indispensable à ce choix, il est exempté de consentement. Aucun outil de mesure d'audience ni de traçage publicitaire n'est utilisé : aucune bannière n'est donc nécessaire."],
     },
   ],
 };
@@ -115,7 +115,7 @@ const en: typeof fr = {
       id: 'cookies',
       court: 'Cookies',
       titre: 'Cookies and audience measurement',
-      paragraphes: ['This site does not set any cookies and does not use any audience measurement or advertising tracking tool. No consent banner is therefore needed.'],
+      paragraphes: ['The only cookie on this site remembers the language chosen with the language selector, for one year. As it is strictly necessary for that choice, it is exempt from consent. No audience measurement or advertising tracking tool is used, so no consent banner is needed.'],
     },
   ],
 };

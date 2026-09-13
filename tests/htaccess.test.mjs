@@ -7,10 +7,10 @@ test('chaque page française a son équivalent sur le domaine anglais, et invers
   const fr = correspondances('fr', 'en');
   const en = correspondances('en', 'fr');
   assert.equal(fr.length, Object.keys(ROUTES).length);
-  assert.ok(fr.includes('  RewriteRule ^methode/?$ https://moamind-solutions.com/method [R=302,L]'));
-  assert.ok(fr.includes('  RewriteRule ^realisations/([^/]+)/?$ https://moamind-solutions.com/work/$1 [R=302,L]'));
+  assert.ok(fr.includes('  RewriteRule ^methode/?$ https://moamind-solutions.com/method/ [R=302,L]'));
+  assert.ok(fr.includes('  RewriteRule ^realisations/([^/]+)/?$ https://moamind-solutions.com/work/$1/ [R=302,L]'));
   assert.ok(fr.includes('  RewriteRule ^$ https://moamind-solutions.com/ [R=302,L]'));
-  assert.ok(en.includes('  RewriteRule ^legal-notice/?$ https://moamind-solutions.fr/mentions-legales [R=302,L]'));
+  assert.ok(en.includes('  RewriteRule ^legal-notice/?$ https://moamind-solutions.fr/mentions-legales/ [R=302,L]'));
 });
 
 test('la détection saute exactement les redirections de pages quand elle ne s’applique pas', () => {

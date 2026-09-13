@@ -7,6 +7,7 @@ import AppelFinal from '../components/AppelFinal.astro';
 import Icone from '../components/Icone.astro';
 import { lien } from '../config';
 import { ecran } from '../lib/ecrans';
+import { filAriane } from '../lib/donnees-structurees';
 import { parSlug, localiser, type Produit } from '../data/produits';
 import commun from '../i18n/commun';
 import textes from '../i18n/realisations';
@@ -19,13 +20,15 @@ const c = commun[langue];
 const p = localiser(Astro.props.produit, langue);
 const s = localiser(parSlug(p.suivant), langue);
 const [derriere, devant] = p.heros;
+/** Le même fil que celui affiché en haut de l'étude. */
+const fil = filAriane(langue, [{ nom: c.nav.realisations, page: 'realisations' }, { nom: p.nom, page: 'etude', slug: p.slug }]);
 const couleurs = [
   `--p1:${p.palette.p1}`, `--p2:${p.palette.p2}`, `--p3:${p.palette.p3}`, `--p-accent:${p.palette.accent}`, `--p-voile:${p.palette.voile}`,
   `--c1:${p.palette.voile}`, `--c3:${p.palette.voile}`, `--c-texte:${p.palette.p2}`, `--c-texte3:${p.palette.p2}`,
 ].join(';');
 const suivant = `--s-fond:linear-gradient(118deg, ${s.palette.p1}, ${s.palette.accent} 60%, ${s.palette.p3});--s-clair:${s.palette.clair};--s-fonce:${s.palette.fonce}`;
 ---
-<Base titre={`${p.nom} — ${p.baseline}`} description={p.resume} langue={langue} page="etude" slug={p.slug}>
+<Base titre={`${p.nom} — ${p.baseline}`} description={p.resume} suffixe={false} langue={langue} page="etude" slug={p.slug} donnees={fil}>
   <article class="etude" style={couleurs}>
     <Bande couleurs={{ f1: p.palette.p1, f2: p.palette.p2, f3: p.palette.p3, lueur: p.palette.lueur }} hauteur="800px" biais="60%" reserve="320px">
       <div class="ouv w">
