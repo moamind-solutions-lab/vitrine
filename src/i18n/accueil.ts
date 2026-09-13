@@ -64,7 +64,7 @@ const fr = {
   },
   experience: {
     titre: 'Quinze ans de projets, côté technique et côté métier',
-    lead: 'En indépendant avec des clients directs, chez des éditeurs de logiciels, et dans de grands groupes où un déploiement concerne des milliers de postes.',
+    lead: 'Auprès de clients directs, chez des éditeurs de logiciels, et dans de grands groupes où un déploiement concerne des milliers de postes.',
     parcours: ['Développeur', 'Chef de projet', 'Product Owner', 'Business Analyst'],
     lien: 'Voir le parcours →',
     /** Mot-clé, et vrai s'il est mis en avant. */
@@ -89,7 +89,7 @@ const fr = {
   },
   appel: {
     titre: 'Décrivez votre projet en quelques phrases',
-    texte: 'Réponse sous 2 jours ouvrés. Le premier entretien est offert, et vous repartez avec une note écrite de votre projet, que vous donniez suite ou non.',
+    texte: "Une idée qui vous paraît folle n'est souvent qu'une idée pas encore cadrée. Le premier entretien est offert, et vous repartez avec une note écrite de votre projet, que vous donniez suite ou non.",
   },
 };
 
@@ -153,7 +153,7 @@ const en: typeof fr = {
   },
   experience: {
     titre: 'Fifteen years of projects, on the tech side and the business side',
-    lead: 'As a freelancer with direct clients, at software companies, and in large corporations where a single rollout reaches thousands of workstations.',
+    lead: 'With direct clients, at software companies, and in large corporations where a single rollout reaches thousands of workstations.',
     parcours: ['Developer', 'Project Manager', 'Product Owner', 'Business Analyst'],
     lien: 'See the background →',
     motsCles: [
@@ -176,7 +176,7 @@ const en: typeof fr = {
   },
   appel: {
     titre: 'Describe your project in a few sentences',
-    texte: 'Reply within two business days. The first call is free, and you walk away with a written note on your project, whether you move forward or not.',
+    texte: "An idea that sounds crazy is often just an idea that hasn't been scoped yet. The first call is free, and you walk away with a written note on your project, whether you move forward or not.",
   },
 };
 

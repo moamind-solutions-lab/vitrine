@@ -12,7 +12,7 @@ const fr = {
   lireEtude: { avant: "Lire l'étude de cas", apres: '→' },
   appel: {
     titre: 'Décrivez ce que vous voulez construire',
-    texte: 'Réponse sous deux jours ouvrés. Le premier entretien ne vous engage à rien, et vous repartez avec une note écrite de votre problème, telle qu\'on l\'a comprise.',
+    texte: 'Chacune de ces applications a d\'abord tenu en une phrase, comme votre idée aujourd\'hui. Le premier entretien ne vous engage à rien, et vous repartez avec une note écrite de votre problème, telle qu\'on l\'a comprise.',
   },
   etude: {
     filAria: "Fil d'Ariane",
@@ -42,7 +42,7 @@ const en: typeof fr = {
   lireEtude: { avant: 'Read the', apres: 'case study →' },
   appel: {
     titre: 'Describe what you want to build',
-    texte: "Reply within two business days. The first conversation commits you to nothing, and you leave with a written note of your problem, as it's been understood.",
+    texte: "Each of these apps once fit in a single sentence, just like your idea today. The first conversation commits you to nothing, and you leave with a written note of your problem, as it's been understood.",
   },
   etude: {
     filAria: 'Breadcrumb',

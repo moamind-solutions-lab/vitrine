@@ -157,10 +157,9 @@ for (const [methode, experience, contact, mentions, accueil] of [['/methode/', '
   }
   if (PAGES.includes(experience)) {
     await aller(experience);
-    const ferme = await ev(`!document.querySelectorAll('details.terrain')[1].open`);
-    await ev(`document.querySelectorAll('details.terrain summary')[1].click()`);
-    const ouvert = await ev(`document.querySelectorAll('details.terrain')[1].open`);
-    verdict(ferme && ouvert, `${experience} : un terrain se déplie au clic`);
+    // Rien à déplier : chaque terrain montre d'emblée son milieu, son enjeu et ses mots-clés.
+    const terrains = await ev(`[...document.querySelectorAll('.mosaique > .terrain')].map((t) => [t.querySelector('.milieu'), t.querySelector('h3'), ...t.querySelectorAll('.mots li')].every((e) => e && e.getBoundingClientRect().height > 0))`);
+    verdict(terrains.length > 0 && terrains.every(Boolean), `${experience} : ${terrains.length} terrains, milieu, enjeu et mots-clés visibles sans clic`);
   }
   if (PAGES.includes(contact)) {
     await aller(contact);

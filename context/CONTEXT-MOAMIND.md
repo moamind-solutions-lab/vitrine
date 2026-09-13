@@ -56,8 +56,8 @@ Règle stricte, valable sur **toutes** les pages :
   « je construis », « je vous réponds sous deux jours ».
 - **« nous » n'est jamais employé** pour désigner le studio, et le site ne dit
   jamais combien de personnes y travaillent — ni qu'il n'y en a qu'une.
-- **Sur l'accueil, Réalisations, les études de cas, Contact et Message reçu,
-  aucune première personne du studio.** Ni « je », ni
+- **Sur l'accueil, Réalisations, les études de cas, Expérience, Contact et
+  Message reçu, aucune première personne du studio.** Ni « je », ni
   « j'ai », ni « mon ». On y emploie « on », « vous », ou des tournures sans
   sujet (« les écrans sont dessinés », « rien ne se construit avant »). Seule
   exception : « Décrire mon projet », où c'est le visiteur qui parle de son
@@ -128,16 +128,19 @@ Décidées le 10 septembre 2026, elles s'appliquent à toute évolution du site.
 6. **Pas de rattachement géographique mis en avant.** Le travail se fait pour
    toute la France et au-delà. Bordeaux n'apparaît qu'à deux endroits, en
    petit : la ligne de copyright du pied de page (« Basé à Bordeaux, au travail
-   partout ») et la fiche de la page Expérience (« Bordeaux — les projets, eux,
-   n'ont pas de frontière »). Jamais dans un titre, jamais dans le hero.
+   partout ») et l'introduction des terrains sur la page Expérience (« Tout part
+   de Bordeaux ; les projets, eux, n'ont pas de frontière »). Jamais dans un
+   titre, jamais dans le hero.
    Seule exception, invisible à l'écran : les données structurées de l'accueil
    déclarent Bordeaux comme ville du studio, pour les moteurs de recherche.
 7. **Le parcours ne se présente jamais comme un CV.** Pas de dates, pas de
-   durées, pas d'employeurs nommés. La page Expérience montre des
-   **terrains** : un milieu, ses mots-clés toujours visibles, et ses tâches en
-   puces courtes, au ton professionnel, repliées derrière un `<details>` que le
-   visiteur ouvre s'il le souhaite. Les mots-clés doivent se lire d'un coup
-   d'œil, sans rien déplier.
+   durées, pas d'employeurs nommés, pas d'encadrés « Formation » ou
+   « Certification » : le diplôme d'ingénieur et la certification PSPO I se
+   disent dans les textes. La page Expérience montre les **terrains** en
+   mosaïque d'enjeux : chaque carte s'ouvre sur ce qui était en jeu, en grand
+   (« Des milliers de postes, et des auditeurs à convaincre. »), le milieu
+   n'est qu'une étiquette, puis une phrase dit ce qui a été fait et les
+   mots-clés restent visibles. Rien à déplier : tout se lit d'un coup d'œil.
 
 8. **Aucune personne réelle sur les écrans.** Les écrans Teamago reprennent
    un vrai fichier de club : au rendu, `scripts/anonymiser.mjs` remplace les

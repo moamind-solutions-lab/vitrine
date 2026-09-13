@@ -100,7 +100,7 @@ const fr = {
   },
   appel: {
     titre: 'Commençons par écouter',
-    texte: "Le premier entretien ne vous engage à rien. Vous repartez avec une note écrite de ce que j'ai compris de votre projet, et elle est à vous, même si vous vous arrêtez là.",
+    texte: "Aucune idée n'est trop folle pour être écoutée. Le premier entretien ne vous engage à rien. Vous repartez avec une note écrite de ce que j'ai compris de votre projet, et elle est à vous, même si vous vous arrêtez là.",
   },
 };
 
@@ -203,7 +203,7 @@ const en: typeof fr = {
   },
   appel: {
     titre: "Let's start by listening",
-    texte: "The first call doesn't commit you to anything. You leave with a written note of what I understood about your project, and it's yours, even if you stop there.",
+    texte: "No idea is too wild to be heard out. The first call doesn't commit you to anything. You leave with a written note of what I understood about your project, and it's yours, even if you stop there.",
   },
 };
 

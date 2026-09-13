@@ -10,8 +10,11 @@ interface Props { langue: Langue }
 const { langue } = Astro.props;
 const t = textes[langue];
 
-/* Icônes des quatre apports, dans l'ordre des items du texte. */
+/* Icônes des quatre apports et des quatre outils, dans l'ordre des items du texte. */
 const icones = ['code', 'risque', 'budget', 'audit'] as const;
+const iconesOutils = ['mobile', 'navigateur', 'donnees', 'tranches'] as const;
+/** Taille de chaque terrain dans la mosaïque, dans l'ordre des items : deux rangées alternées, puis trois tiers. */
+const formats = ['large', 'moyen', 'moyen', 'large', 'tiers', 'tiers', 'tiers'] as const;
 ---
 <Base titre={t.meta.titre} description={t.meta.description} langue={langue} page="experience">
   <Bande hauteur="640px" biais="52%" reserve="0px">
@@ -29,13 +32,13 @@ const icones = ['code', 'risque', 'budget', 'audit'] as const;
     </div>
   </Bande>
 
-  <section class="sec w">
+  <section class="sec w apports">
     <div class="deux">
       <h2 class="t2">{t.apports.titre}</h2>
       <p class="lead">{t.apports.lead}</p>
     </div>
     <div class="grille-2">
-      {t.apports.items.map((a, i) => <article class="carte"><div class="ico"><Icone nom={icones[i]} /></div><h3>{a.titre}</h3><p class="long">{a.texte}</p></article>)}
+      {t.apports.items.map((a, i) => <article class="carte"><div class="tete-carte"><div class="ico"><Icone nom={icones[i]} /></div><h3>{a.titre}</h3></div><p class="long">{a.texte}</p></article>)}
     </div>
   </section>
 
@@ -44,23 +47,16 @@ const icones = ['code', 'risque', 'budget', 'audit'] as const;
       <h2 class="t2">{t.terrains.titre}</h2>
       <p class="lead">{t.terrains.lead}</p>
     </div>
-    <ul class="terrains">
+    <ul class="mosaique">
       {t.terrains.items.map((tr, i) => (
-        <li>
-          <details class="terrain" open={i === 0}>
-            <summary>
-              <h3>{tr.milieu}</h3>
-              <span class="mots">{tr.cles.map((cle) => <span>{cle}</span>)}</span>
-              <span class="plus" aria-hidden="true"></span>
-            </summary>
-            <ul class="taches">{tr.taches.map((tache) => <li>{tache}</li>)}</ul>
-          </details>
+        <li class={`terrain terrain--${formats[i]}`}>
+          <p class="milieu">{tr.milieu}</p>
+          <h3>{tr.enjeu}</h3>
+          <p class="recit">{tr.recit}</p>
+          <ul class="mots">{tr.cles.map((cle) => <li>{cle}</li>)}</ul>
         </li>
       ))}
     </ul>
-    <dl class="fiche">
-      {t.fiche.map((f) => <div><dt>{f.terme}</dt><dd>{f.valeur}</dd></div>)}
-    </dl>
   </section>
 
   <section class="sec w sombre">
@@ -74,7 +70,7 @@ const icones = ['code', 'risque', 'budget', 'audit'] as const;
     <div class="outils">
       <div><h2 class="t2">{t.outils.titre}</h2><p class="lead">{t.outils.lead}</p></div>
       <div class="grille-2">
-        {t.outils.items.map((o) => <article class="carte carte--bord"><h3>{o.titre}</h3><p>{o.texte}</p></article>)}
+        {t.outils.items.map((o, i) => <article class="carte carte--bord"><div class="tete-carte"><div class="ico"><Icone nom={iconesOutils[i]} /></div><h3>{o.titre}</h3></div><p>{o.texte}</p></article>)}
       </div>
     </div>
   </section>
@@ -94,35 +90,37 @@ const icones = ['code', 'risque', 'budget', 'audit'] as const;
   .mot dd { margin: 0; font-size: 15px; line-height: 1.55; color: var(--encre-2); }
   .mot strong { color: var(--encre); }
 
+  /* Le bas du bandeau est en biais : sa pointe basse, à gauche, arrive au niveau du titre sans ce supplément. */
+  .apports { padding-top: clamp(112px, 13vw, 190px); }
   .deux { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; margin-bottom: 56px; }
   .deux .lead { margin: 0; }
 
-  /* ---------- terrains : mots-clés toujours visibles, tâches dépliables ---------- */
-  .terrains { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-  .terrain { background: #fff; border: 1px solid var(--trait); border-radius: 24px; padding: 26px 30px; transition: border-color .2s, box-shadow .2s; }
-  /* Le résumé ne contient qu'un titre et du texte en ligne : le contenu permis d'un <summary>. */
-  .terrain summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) 44px; grid-template-areas: 'titre plus' 'mots plus'; column-gap: 24px; align-items: start; }
-  .terrain h3 { grid-area: titre; }
-  .mots { grid-area: mots; display: flex; flex-wrap: wrap; gap: 8px; }
-  .mots span { font-size: 13.5px; font-weight: 600; padding: 8px 13px; border-radius: 99px; background: var(--creme); border: 1px solid var(--trait); }
-  .plus { grid-area: plus; }
-  .terrain summary::-webkit-details-marker { display: none; }
-  .terrain summary:hover .plus { border-color: var(--f2); color: var(--f2); }
-  .terrain summary:hover h3 { color: var(--f1); }
-  .terrain h3 { font-size: 22px; letter-spacing: -.025em; font-weight: 800; margin-bottom: 14px; transition: color .15s; }
-  .plus { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--trait); display: grid; place-items: center; font-size: 20px; color: var(--gris); }
-  .plus::before { content: '+'; }
-  .terrain[open] { border-color: #F2C9B4; box-shadow: 0 20px 40px -30px rgba(110,34,19,.5); }
-  .terrain[open] .plus { background: var(--encre); color: #fff; border-color: var(--encre); }
-  .terrain[open] .plus::before { content: '−'; }
-  .taches { list-style: none; margin: 22px 0 0; padding: 20px 0 0; border-top: 1px solid var(--trait); display: grid; gap: 10px; }
-  .taches li { position: relative; max-width: 72ch; padding-left: 20px; font-size: 16px; line-height: 1.55; color: var(--encre-2); }
-  .taches li::before { content: ''; position: absolute; left: 0; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: var(--f2); }
+  /* Icône et titre sur la même ligne. */
+  .tete-carte { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+  .tete-carte .ico { flex: none; margin: 0; }
+  .tete-carte h3 { margin: 0; line-height: 1.2; }
 
-  .fiche { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 40px 0 0; }
-  .fiche div { border-radius: 22px; padding: 22px 24px; background: #fff; border: 1px solid var(--trait); }
-  .fiche dt { font-size: 12.5px; font-weight: 700; color: var(--f2); margin-bottom: 6px; }
-  .fiche dd { margin: 0; font-size: 17px; font-weight: 700; }
+  /* ---------- terrains : une mosaïque d'enjeux ; le milieu en étiquette, les mots-clés toujours visibles ---------- */
+  .mosaique { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+  .terrain { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--trait); border-radius: 26px; padding: 30px; transition: transform .25s ease, box-shadow .25s ease, border-color .25s; }
+  .terrain--large { grid-column: span 7; }
+  .terrain--moyen { grid-column: span 5; }
+  .terrain--tiers { grid-column: span 4; }
+  .terrain:hover { transform: translateY(-4px); border-color: #F2C9B4; box-shadow: 0 30px 50px -34px rgba(110,34,19,.55); }
+  .milieu { display: flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 700; color: var(--f2); margin: 0 0 18px; }
+  .milieu::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .terrain h3 { font-size: 25px; line-height: 1.12; letter-spacing: -.03em; font-weight: 800; margin-bottom: 14px; }
+  .terrain--large h3 { font-size: clamp(26px, 2.5vw, 34px); }
+  .recit { font-size: 15.5px; line-height: 1.6; color: var(--encre-2); margin: 0 0 24px; }
+  .mots { list-style: none; margin: auto 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .mots li { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 99px; background: var(--creme); border: 1px solid var(--trait); }
+  /* Le premier terrain porte la couleur Braise : l'œil entre par lui. */
+  .terrain:first-child { background: linear-gradient(135deg, var(--f1), var(--f2) 60%, var(--f3)); border-color: transparent; color: #fff; }
+  .terrain:first-child .milieu { color: rgba(255,255,255,.85); }
+  .terrain:first-child .recit { color: rgba(255,255,255,.88); }
+  .terrain:first-child .mots li { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.26); }
+  .terrain:first-child:hover { box-shadow: 0 34px 60px -30px rgba(110,34,19,.75); }
+  @media (prefers-reduced-motion: reduce) { .terrain, .terrain:hover { transition: none; transform: none; } }
 
   .outils { display: grid; grid-template-columns: 1fr 1.3fr; gap: 80px; }
 
@@ -131,13 +129,23 @@ const icones = ['code', 'risque', 'budget', 'audit'] as const;
     .ouv, .deux, .outils { grid-template-columns: 1fr; gap: 32px; }
     .deux { margin-bottom: 40px; }
     .triade { padding-bottom: 40px; }
-    .fiche { grid-template-columns: 1fr; }
+    .mosaique { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .terrain--large, .terrain--moyen, .terrain--tiers { grid-column: span 1; }
+    .terrain:first-child { grid-column: span 2; }
   }
   @media (max-width: 700px) {
     .mot { grid-template-columns: 1fr; gap: 8px; }
-    .terrain { padding: 22px; }
-    .terrain h3 { font-size: 19px; }
-    .terrain summary { grid-template-areas: 'titre plus' 'mots mots'; column-gap: 12px; }
-    .taches li { font-size: 15px; }
+    .mosaique { grid-template-columns: 1fr; }
+    .terrain:first-child { grid-column: auto; }
+    .terrain { padding: 24px; }
+    .terrain h3, .terrain--large h3 { font-size: 23px; }
+  }
+  /* Les deux derniers mots d'un titre de carte restent liés (« même conversation ») : sur les plus
+     petits écrans, icône, titre et marges se resserrent pour que ce bloc tienne à côté de l'icône. */
+  @media (max-width: 400px) {
+    .carte { padding: 22px; }
+    .tete-carte { gap: 12px; }
+    .tete-carte .ico { width: 40px; height: 40px; border-radius: 12px; }
+    .tete-carte h3 { font-size: 19px; }
   }
 </style>
