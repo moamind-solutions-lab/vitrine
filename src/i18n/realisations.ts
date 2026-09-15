@@ -18,8 +18,14 @@ const fr = {
     filAria: "Fil d'Ariane",
     etiquette: 'Étude de cas',
     fiche: { domaine: 'Domaine', plateforme: 'Plateforme' },
-    /** Badge App Store : petite ligne, grande ligne, nom accessible ({nom} = nom du produit). */
-    appStore: { avant: 'Télécharger dans', nom: "l'App Store", aria: "Télécharger {nom} dans l'App Store" },
+    /** Badges des magasins, inactifs tant que les applications ne sont pas publiées : petite ligne, grande ligne. */
+    magasins: {
+      appStore: { avant: 'Télécharger dans', nom: "l'App Store" },
+      googlePlay: { avant: 'Télécharger dans', nom: 'Google Play' },
+      /** Le bandeau posé sur chaque badge, et ce que lisent les lecteurs d'écran à la place des badges. */
+      ruban: 'Bientôt',
+      bientot: "L'application sera bientôt disponible sur l'App Store et Google Play.",
+    },
     ecranPrincipal: 'écran principal',
     depart: 'Le point de départ',
     parcours: 'Le parcours principal, en quatre écrans',
@@ -48,7 +54,12 @@ const en: typeof fr = {
     filAria: 'Breadcrumb',
     etiquette: 'Case study',
     fiche: { domaine: 'Field', plateforme: 'Platform' },
-    appStore: { avant: 'Download on the', nom: 'App Store', aria: 'Download {nom} on the App Store' },
+    magasins: {
+      appStore: { avant: 'Download on the', nom: 'App Store' },
+      googlePlay: { avant: 'Get it on', nom: 'Google Play' },
+      ruban: 'Coming soon',
+      bientot: 'The app will soon be available on the App Store and Google Play.',
+    },
     ecranPrincipal: 'main screen',
     depart: 'Where it started',
     parcours: 'The main journey, in four screens',
