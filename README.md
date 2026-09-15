@@ -31,7 +31,7 @@ Tout est regroupé dans [`src/config.ts`](src/config.ts) :
 | `LIEN_RDV` | Votre URL Cal.com ou Calendly. Laissée vide, le bouton « Réserver 30 minutes » n'apparaît nulle part. |
 
 Les informations légales (raison sociale, SIREN, directeur de la publication)
-sont à compléter dans [`src/pages/mentions-legales.astro`](src/pages/mentions-legales.astro).
+vivent dans [`src/i18n/mentions.ts`](src/i18n/mentions.ts), en français et en anglais.
 
 ## Les écrans des produits
 

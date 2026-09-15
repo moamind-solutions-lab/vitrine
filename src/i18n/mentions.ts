@@ -4,7 +4,6 @@ const fr = {
   meta: { titre: 'Mentions légales', description: 'Mentions légales et politique de confidentialité du site de Moamind Solutions.' },
   etiquette: 'Informations légales',
   titre: 'Mentions légales',
-  rappel: "Ce site vient d'être mis en ligne : les informations ci-dessous sont à compléter avec les données réelles de la structure avant toute diffusion publique.",
   foi: 'Seule cette version française fait foi.',
   sommaireAria: 'Sommaire',
   blocs: [
@@ -13,12 +12,15 @@ const fr = {
       court: 'Éditeur du site',
       titre: 'Éditeur du site',
       paragraphes: [
-        `<span translate="no">Moamind Solutions</span> · raison sociale&nbsp;<em>à&nbsp;compléter</em><br />
-          Forme juridique et capital social&nbsp;:&nbsp;<em>à&nbsp;compléter</em><br />
-          Siège social&nbsp;:&nbsp;<em>à&nbsp;compléter</em><br />
-          SIREN / SIRET&nbsp;:&nbsp;<em>à&nbsp;compléter</em><br />
-          Numéro de TVA intracommunautaire&nbsp;:&nbsp;<em>à&nbsp;compléter</em><br />
-          Directeur de la publication&nbsp;:&nbsp;<em>à&nbsp;compléter</em>`,
+        `<span translate="no">Moamind Solutions</span><br />
+          Forme juridique&nbsp;: société par actions&nbsp;simplifiée&nbsp;(SAS)<br />
+          Capital social&nbsp;: 100&nbsp;€<br />
+          Siège social&nbsp;: 12 rue Marguerite&nbsp;Yourcenar,<br />
+          33160&nbsp;Saint-Médard-en-Jalles,&nbsp;France<br />
+          RCS Bordeaux 924&nbsp;825&nbsp;201<br />
+          SIRET&nbsp;: 924&nbsp;825&nbsp;201&nbsp;00016<br />
+          Numéro de TVA intracommunautaire&nbsp;: FR38&nbsp;924&nbsp;825&nbsp;201<br />
+          Directeur de la publication&nbsp;: Xavier&nbsp;Defer,&nbsp;président`,
       ],
     },
     {
@@ -64,7 +66,6 @@ const en: typeof fr = {
   meta: { titre: 'Legal notice', description: "Legal notice and privacy policy for the Moamind Solutions website." },
   etiquette: 'Legal information',
   titre: 'Legal notice',
-  rappel: 'This site has just gone live: the information below needs to be completed with the real details of the business before any public release.',
   foi: 'This English version is provided for convenience. In case of any discrepancy, the French version prevails.',
   sommaireAria: 'Contents',
   blocs: [
@@ -73,12 +74,15 @@ const en: typeof fr = {
       court: 'Publisher',
       titre: 'Publisher',
       paragraphes: [
-        `<span translate="no">Moamind Solutions</span> · legal name&nbsp;<em>to&nbsp;be completed</em><br />
-          Legal form and share capital&nbsp;:&nbsp;<em>to&nbsp;be completed</em><br />
-          Registered office&nbsp;:&nbsp;<em>to&nbsp;be completed</em><br />
-          Company registration number&nbsp;:&nbsp;<em>to&nbsp;be completed</em><br />
-          VAT number&nbsp;:&nbsp;<em>to&nbsp;be completed</em><br />
-          Publication director&nbsp;:&nbsp;<em>to&nbsp;be completed</em>`,
+        `<span translate="no">Moamind Solutions</span><br />
+          Legal form: simplified <span style="white-space:nowrap">joint-stock company (SAS)</span><br />
+          Share capital: €100<br />
+          Registered office: 12 rue Marguerite&nbsp;Yourcenar,<br />
+          33160&nbsp;Saint-Médard-en-Jalles,&nbsp;France<br />
+          Registered in Bordeaux (RCS) under number 924&nbsp;825&nbsp;201<br />
+          SIRET: 924&nbsp;825&nbsp;201&nbsp;00016<br />
+          EU VAT number: FR38&nbsp;924&nbsp;825&nbsp;201<br />
+          Publication director: Xavier&nbsp;Defer,&nbsp;President`,
       ],
     },
     {

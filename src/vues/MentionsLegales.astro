@@ -19,7 +19,6 @@ const t = textes[langue];
     </nav>
     <div class="texte long">
       {langue === 'en' && <p class="rappel">{t.foi}</p>}
-      <p class="rappel">{t.rappel}</p>
 
       {t.blocs.map((b) => (
         <section class="bloc" id={b.id}>
@@ -58,8 +57,6 @@ const t = textes[langue];
   .bloc { padding: 30px 0; border-top: 1px solid var(--trait); }
   .bloc h2 { font-size: 26px; letter-spacing: -.03em; font-weight: 800; margin-bottom: 14px; }
   .bloc p { font-size: 16.5px; line-height: 1.75; color: var(--encre-2); margin-bottom: 12px; }
-  .bloc em { font-style: normal; background: #F4EFEA; padding: 1px 7px; border-radius: 6px; color: var(--gris); }
-
   @media (max-width: 1100px) {
     .legal { grid-template-columns: 1fr; gap: 0; padding-top: 40px; }
     nav { display: none; }
