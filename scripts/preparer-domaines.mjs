@@ -8,6 +8,7 @@ import { copyFileSync, cpSync, existsSync, readdirSync, rmSync, writeFileSync } 
 import { join, relative, resolve } from 'node:path';
 import { DOMAINES, SANS_INDEX, chemin } from '../src/i18n/routes.ts';
 import { htaccess } from './htaccess.mjs';
+import { envoi } from './envoi.mjs';
 
 const DIST = resolve(import.meta.dirname, '../dist');
 const EN = join(DIST, 'en');
@@ -42,5 +43,12 @@ writeFileSync(join(EN, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${DOM
 
 writeFileSync(join(DIST, '.htaccess'), htaccess('fr'));
 writeFileSync(join(EN, '.htaccess'), htaccess('en'));
+
+// L'adresse qui reçoit les messages vient d'un secret du dépôt (public) : elle n'est écrite que dans dist/.
+const destinataire = process.env.FORMULAIRE_DESTINATAIRE ?? '';
+if (!destinataire && process.env.CI) throw new Error('Secret FORMULAIRE_DESTINATAIRE absent : les messages du formulaire ne partiraient nulle part.');
+if (!destinataire) console.warn('FORMULAIRE_DESTINATAIRE absent : envoi.php refusera tous les messages.');
+writeFileSync(join(DIST, 'envoi.php'), envoi('fr', destinataire));
+writeFileSync(join(EN, 'envoi.php'), envoi('en', destinataire));
 
 console.log(`Domaines prêts : ${adresses.length} pages dans le plan du site anglais, .htaccess générés.`);

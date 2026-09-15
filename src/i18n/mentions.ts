@@ -49,7 +49,7 @@ const fr = {
       titre: 'Données personnelles',
       paragraphes: [
         'Les informations transmises par le formulaire de contact (nom, organisation, adresse électronique, nature du projet, échéance, budget et message) servent exclusivement à répondre à votre demande. Elles ne sont ni revendues, ni cédées, ni utilisées à des fins de prospection par des tiers.',
-        "L'acheminement des messages est assuré par Web3Forms. Les données sont conservées le temps nécessaire au traitement de la demande, et au maximum trois ans après le dernier échange.",
+        "Les messages partent par e-mail depuis le serveur de l'hébergeur du site, o2switch, sans passer par un service tiers. Les données sont conservées le temps nécessaire au traitement de la demande, et au maximum trois ans après le dernier échange.",
         "Conformément au règlement général sur la protection des données, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos données. Ces droits s'exercent par le formulaire de contact. Vous pouvez également introduire une réclamation auprès de la CNIL.",
       ],
     },
@@ -111,7 +111,7 @@ const en: typeof fr = {
       titre: 'Personal data',
       paragraphes: [
         'The information sent through the contact form (name, organization, email address, nature of the project, target date, budget and message) is used solely to reply to your request. It is never sold, passed on, or used for marketing purposes by third parties.',
-        'Messages are delivered by Web3Forms. Data is kept for as long as needed to handle the request, and for a maximum of three years after the last exchange.',
+        "Messages are sent by email from the site's host, o2switch, without going through any third-party service. Data is kept for as long as needed to handle the request, and for a maximum of three years after the last exchange.",
         'Under the GDPR, you have the right to access, correct, erase, restrict, object to, and port your data. These rights can be exercised through the contact form. You can also file a complaint with the CNIL (the French data protection authority).',
       ],
     },

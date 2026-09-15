@@ -270,9 +270,9 @@ pointillés, aucun texte en dégradé.
   `.dc.html` des trois projets en PNG @2x avec Chrome headless, puis
   `astro:assets` les sert en AVIF/WebP responsive. Le script est rejouable : on
   modifie une maquette, on relance, le site est à jour.
-- **Formulaire** : Web3Forms (clé publique, aucun serveur). Clé et lien de
-  rendez-vous isolés dans `src/config.ts`. Les messages arrivent sur l'adresse
-  liée à la clé, qui n'apparaît nulle part sur le site ni dans ce dépôt.
+- **Formulaire** : un script PHP (`envoi.php`, généré par `scripts/envoi.mjs`)
+  envoie le mail depuis o2switch, rédigé en français. L'adresse de destination
+  vient d'un secret GitHub et n'apparaît nulle part sur le site ni dans ce dépôt.
 - **Déploiement** : à chaque push sur `main`, GitHub Actions construit le site
   et l'envoie par FTPS chez o2switch. Le français est sur
   https://moamind-solutions.fr, l'anglais sur https://moamind-solutions.com ; la

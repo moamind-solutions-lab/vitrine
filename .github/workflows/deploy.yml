@@ -24,6 +24,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          FORMULAIRE_DESTINATAIRE: ${{ secrets.FORMULAIRE_DESTINATAIRE }}
       # Envoie dist/ dans public_html par FTPS. Seuls les fichiers modifiés partent ; ceux
       # qu'une publication précédente avait envoyés et qui n'existent plus sont supprimés.
       # Action tierce qui reçoit le mot de passe FTP : figée sur le commit de sa v4.3.5,

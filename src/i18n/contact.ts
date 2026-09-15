@@ -13,8 +13,6 @@ const fr = {
   ],
   rdvQuestion: 'Vous préférez parler tout de suite ?',
   formulaire: {
-    sujet: 'Nouveau projet — Moamind Solutions',
-    expediteur: 'Site Moamind Solutions',
     titre: 'Votre projet',
     profil: { legende: 'Vous êtes', particulier: 'Un particulier', professionnel: 'Un professionnel' },
     nom: { libelle: 'Votre nom', exemple: 'Camille Martin…' },
@@ -26,6 +24,7 @@ const fr = {
     message: { libelle: 'Votre projet', aide: "Ce que vous faites, qui s'en sert, ce qui coince aujourd'hui." },
     envoyer: 'Envoyer mon projet',
     envoi: 'Envoi…',
+    erreur: "Votre message n'a pas pu partir. Vérifiez les champs marqués d'une étoile, puis réessayez dans un instant.",
     mention: 'Vos informations servent uniquement à vous répondre. Elles ne sont ni revendues, ni utilisées pour autre chose.',
   },
 };
@@ -42,8 +41,6 @@ const en: typeof fr = {
   ],
   rdvQuestion: 'Rather talk right away?',
   formulaire: {
-    sujet: 'New project — Moamind Solutions',
-    expediteur: 'Moamind Solutions website',
     titre: 'Your project',
     profil: { legende: 'You are', particulier: 'An individual', professionnel: 'A business' },
     nom: { libelle: 'Your name', exemple: 'Camille Martin…' },
@@ -55,6 +52,7 @@ const en: typeof fr = {
     message: { libelle: 'Your project', aide: 'What you do, who uses it, what gets in the way today.' },
     envoyer: 'Send my project',
     envoi: 'Sending…',
+    erreur: "Your message couldn't be sent. Check the fields marked with a star, then try again in a moment.",
     mention: 'Your information is used only to reply to you. It is never sold or used for anything else.',
   },
 };

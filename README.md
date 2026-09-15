@@ -27,7 +27,6 @@ Tout est regroupé dans [`src/config.ts`](src/config.ts) :
 
 | Constante | Ce qu'il faut y mettre |
 |---|---|
-| `CLE_FORMULAIRE` | Votre clé d'accès [Web3Forms](https://web3forms.com) — gratuite, aucun compte serveur. Sans elle, la page Contact affiche un avertissement et le formulaire n'envoie rien. |
 | `LIEN_RDV` | Votre URL Cal.com ou Calendly. Laissée vide, le bouton « Réserver 30 minutes » n'apparaît nulle part. |
 
 Les informations légales (raison sociale, SIREN, directeur de la publication)
@@ -111,7 +110,7 @@ envoie `dist/` dans `public_html` par FTPS : seuls les fichiers modifiés parten
 et ceux qu'une publication précédente avait envoyés puis qui ont disparu sont
 supprimés. Le reste de `public_html` (par exemple `cgi-bin/`) n'est jamais touché.
 
-Le workflow lit trois secrets du dépôt (Settings → Secrets and variables →
+Le workflow lit quatre secrets du dépôt (Settings → Secrets and variables →
 Actions) :
 
 | Secret | Valeur |
@@ -119,7 +118,24 @@ Actions) :
 | `FTP_SERVEUR` | nom du serveur o2switch indiqué dans cPanel (ex. `xxxx.o2switch.net`) |
 | `FTP_UTILISATEUR` | identifiant cPanel ou d'un compte FTP dédié |
 | `FTP_MOT_DE_PASSE` | son mot de passe |
+| `FORMULAIRE_DESTINATAIRE` | l'adresse qui reçoit les messages du formulaire de contact |
 
 Le dossier de destination vaut `public_html/`, valable pour l'identifiant
 cPanel. Pour un compte FTP dédié dont la racine est déjà `public_html`, créer la
 variable de dépôt `FTP_DOSSIER` avec la valeur `./`.
+
+## Formulaire de contact
+
+La page Contact envoie à `/envoi.php`, un script PHP que `scripts/envoi.mjs`
+génère à chaque build pour chacun des deux domaines. Il vérifie les champs,
+écarte les robots (case piège `botcheck`) et envoie le mail depuis le serveur
+o2switch, **toujours rédigé en français** : le formulaire anglais soumet les
+mêmes valeurs que le français, seuls les libellés changent. Le mail part de
+`new-project@moamind-solutions.com` (constante `EXPEDITEUR`) et « Répondre »
+écrit directement au visiteur.
+
+L'adresse de destination vient du secret `FORMULAIRE_DESTINATAIRE` : le dépôt
+est public, elle n'est écrite que dans `dist/`. Sans ce secret, la publication
+échoue plutôt que de mettre en ligne un formulaire qui n'enverrait rien. En
+local, sans la variable, `envoi.php` refuse tous les messages, et `npm run dev`
+n'exécute pas le PHP : l'envoi ne se teste qu'en ligne.
