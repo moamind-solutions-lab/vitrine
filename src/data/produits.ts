@@ -142,9 +142,9 @@ export const produits: Produit[] = [
     annee: '2026',
     appStore: APP_STORE_FICTIF,
     palette: { p1: '#043B33', p2: '#0A5D50', p3: '#1FA488', accent: '#0E7C6B', voile: '#E7F3F0', contraste: '#0A5D50', clair: '#B8F2DF', fonce: '#043B33', lueur: 'rgba(170,255,220,.28)' },
-    heros: [{ fichier: 'Correspondances', haut: '#F5F6F4' }, { fichier: 'Main', haut: '#F5F6F4' }],
+    heros: [{ fichier: 'Correspondances', haut: '#F5F6F4' }, { fichier: 'MainSansNom', haut: '#F6F8F7' }],
     ecrans: [
-      { fichier: 'Main', haut: '#F5F6F4' },
+      { fichier: 'MainSansNom', haut: '#F6F8F7' },
       { fichier: 'SignalementCouleurs', haut: '#F5F6F4' },
       { fichier: 'Correspondances', haut: '#F5F6F4' },
       { fichier: 'MiseEnRelation', haut: '#F5F6F4' },

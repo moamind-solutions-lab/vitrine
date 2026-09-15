@@ -114,7 +114,9 @@ Décidées le 10 septembre 2026, elles s'appliquent à toute évolution du site.
    (« Frais de service ChargeAir ») ainsi que `pilpoil/Main` et `pilpoil/Profil`
    sont donc interdits sur l'accueil. Pour l'accueil, `pilpoil/MainSansNom`
    est une variante de `pilpoil/Main` sans le nom à côté du logo (`VARIANTES`
-   dans `scripts/retouches.mjs`). Les occurrences de « Teamago » dans les
+   dans `scripts/retouches.mjs`). Depuis le 15 septembre 2026, les réalisations
+   et l'étude de cas Pil'Poil montrent elles aussi `MainSansNom` : le même écran
+   partout. Les occurrences de « Teamago » dans les
    artboards Teamago sont dans des commentaires CSS : elles ne se voient pas.
    Vérifier avant d'ajouter un écran à `eventail` ou `rangee`
    (`src/data/produits.ts`).

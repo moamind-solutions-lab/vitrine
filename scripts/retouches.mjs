@@ -34,6 +34,7 @@ export function retoucher(projet, nom, html) {
  */
 export const VARIANTES = {
   // L'accueil ne montre aucun nom d'application : son écran Pil'Poil garde le logo, pas le nom.
+  // Les réalisations et l'étude de cas reprennent le même écran, par cohérence.
   // Les 62 px réservés en haut à la barre d'état doublent celle du téléphone 3D : il en reste 14.
   // La pastille de l'accueil annonce « 1 chien trouvé à moins de 5 km » : le second chien passe au-delà.
   'pilpoil/MainSansNom': {
