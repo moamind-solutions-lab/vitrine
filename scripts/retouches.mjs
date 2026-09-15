@@ -21,6 +21,12 @@ export const RETOUCHES = {
     if (garde !== 1) throw new Error(`Retouche impossible : ${garde} repère(s) conservé(s) au lieu d'un`);
     return sortie;
   },
+  // Les écrans Teamago du site : les 54 px réservés en haut à la barre d'état doublent celle du
+  // téléphone 3D. Il en reste 10, soit 14 px avec la marge du bloc suivant, comme pour Pil'Poil.
+  ...Object.fromEntries(['Infos', 'Participants', 'Decompte', 'Reglement'].map((nom) => [
+    `teamago/${nom}`,
+    (html) => remplacer(html, '<div style="height: 54px; flex-shrink: 0;"></div>', '<div style="height: 10px; flex-shrink: 0;"></div>'),
+  ])),
 };
 
 export function retoucher(projet, nom, html) {

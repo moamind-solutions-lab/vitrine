@@ -17,6 +17,16 @@ test('échoue si la maquette a changé', () => {
   assert.throws(() => retoucher('pilpoil', 'Carte', carte.replace('top: 372px', 'top: 380px')), /0 repère/);
 });
 
+test('les écrans Teamago du site perdent l’espace réservé à la barre d’état', () => {
+  const ecran = '<div style="width: 390px;">\n  <div style="height: 54px; flex-shrink: 0;"></div>\n  <div>Participants</div>';
+  for (const nom of ['Infos', 'Participants', 'Decompte', 'Reglement']) {
+    const sortie = retoucher('teamago', nom, ecran);
+    assert.ok(sortie.includes('height: 10px') && !sortie.includes('54px'), nom);
+  }
+  assert.throws(() => retoucher('teamago', 'Participants', ecran.replace('54px', '60px')), /introuvable/);
+  assert.equal(retoucher('teamago', 'Main', ecran), ecran);
+});
+
 test('ne touche pas aux autres écrans', () => {
   assert.equal(retoucher('pilpoil', 'Alertes', carte), carte);
 });
