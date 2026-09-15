@@ -145,9 +145,10 @@ Décidées le 10 septembre 2026, elles s'appliquent à toute évolution du site.
    mots-clés restent visibles. Rien à déplier : tout se lit d'un coup d'œil.
 
 8. **Aucune personne réelle sur les écrans.** Les écrans Teamago reprennent
-   un vrai fichier de club : au rendu, `scripts/anonymiser.mjs` remplace les
-   neuf personnes par des personnes fictives et le club par « Les Hérons ». Les
-   maquettes d'origine ne sont pas modifiées.
+   un vrai fichier de club. Depuis le 14 septembre 2026, les maquettes elles-mêmes
+   portent des personnes fictives (mêmes initiales que les vraies) : le site les
+   reprend telles quelles. Le club garde son vrai nom dans les maquettes : au
+   rendu, `scripts/anonymiser.mjs` le remplace par « Les Hérons ».
 
 ## Structure du site
 
