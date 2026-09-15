@@ -5,7 +5,7 @@
 import { ROUTES, DOMAINES, autre } from '../src/i18n/routes.ts';
 
 /** Tant que c'est vrai, chaque domaine n'affiche que sa page « Bientôt en ligne » (public/bientot.html, public/en/bientot.html). */
-export const BIENTOT = true;
+export const BIENTOT = false;
 
 /** Redirections des pages de `de` vers leur équivalent sur le domaine de `vers`. */
 export function correspondances(de, vers) {
