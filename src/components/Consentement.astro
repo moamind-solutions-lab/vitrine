@@ -3,7 +3,9 @@
  * Bandeau de consentement aux cookies de mesure d'audience (recommandations CNIL) :
  * Google Analytics ne se charge qu'après « Accepter », refuser est aussi simple qu'accepter,
  * le choix est retenu six mois et se modifie à tout moment depuis le pied de page.
+ * « Personnaliser » ouvre les préférences par finalité.
  */
+import Icone from './Icone.astro';
 import { GOOGLE_ANALYTICS, lien } from '../config';
 import commun from '../i18n/commun';
 import type { Langue } from '../i18n/routes';
@@ -12,11 +14,34 @@ const { langue } = Astro.props;
 const t = commun[langue].consentement;
 ---
 <section class="consentement" aria-label={t.aria} data-ga={GOOGLE_ANALYTICS} hidden>
-  <h2>{t.titre}</h2>
-  <p>{t.texte} <a href={`${lien('mentions', langue)}#cookies`}>{t.plus}</a></p>
-  <div class="choix">
-    <button type="button" data-choix="refuse">{t.refuser}</button>
-    <button type="button" data-choix="accepte">{t.accepter}</button>
+  <!-- Premier niveau : refuser reste possible en un clic, au même niveau qu'accepter (exigence CNIL). -->
+  <div class="resume">
+    <p>{t.texte} <a href={`${lien('mentions', langue)}#cookies`}>{t.plus}</a></p>
+    <div class="choix">
+      <button class="discret" type="button" data-personnaliser>{t.personnaliser}</button>
+      <span class="droite">
+        <button class="discret" type="button" data-choix="refuse">{t.refuser}</button>
+        <button class="principal" type="button" data-choix="accepte">{t.accepter}</button>
+      </span>
+    </div>
+  </div>
+  <div class="reglages" hidden>
+    <h2><Icone nom="cookie" taille={20} />{t.preferences}</h2>
+    <ul>
+      <li>
+        <span><strong>{t.necessaires.titre}</strong><small>{t.necessaires.texte}</small></span>
+        <span class="toujours">{t.necessaires.toujours}</span>
+      </li>
+      <li>
+        <label for="cookies-audience"><strong>{t.audience.titre}</strong><small>{t.audience.texte}</small></label>
+        <!-- Décochée par défaut : le consentement ne se présume pas. -->
+        <input id="cookies-audience" type="checkbox" role="switch" />
+      </li>
+    </ul>
+    <div class="choix">
+      <button class="discret" type="button" data-choix="refuse">{t.obligatoires}</button>
+      <button class="principal" type="button" data-selection>{t.selection}</button>
+    </div>
   </div>
 </section>
 
@@ -65,37 +90,71 @@ const t = commun[langue].consentement;
     });
   };
 
+  const resume = bandeau.querySelector<HTMLElement>('.resume')!;
+  const reglages = bandeau.querySelector<HTMLElement>('.reglages')!;
+  const audience = bandeau.querySelector<HTMLInputElement>('#cookies-audience')!;
+
+  const personnaliser = () => {
+    audience.checked = lire() === 'accepte';
+    resume.hidden = true;
+    reglages.hidden = false;
+    bandeau.hidden = false;
+    audience.focus();
+  };
+  const appliquer = (choix: Choix) => {
+    retenir(choix);
+    if (choix === 'accepte') charger(); else retirer();
+    bandeau.hidden = true;
+    resume.hidden = false;
+    reglages.hidden = true;
+  };
+
   const choix = lire();
   if (choix === 'accepte') charger();
   else if (!choix) bandeau.hidden = false;
 
   bandeau.addEventListener('click', (evenement) => {
-    const bouton = (evenement.target as HTMLElement).closest<HTMLButtonElement>('[data-choix]');
-    if (!bouton) return;
-    const nouveau = bouton.dataset.choix as Choix;
-    retenir(nouveau);
-    if (nouveau === 'accepte') charger(); else retirer();
-    bandeau.hidden = true;
+    const cible = (evenement.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!cible) return;
+    if (cible.dataset.choix) appliquer(cible.dataset.choix as Choix);
+    else if ('personnaliser' in cible.dataset) personnaliser();
+    else if ('selection' in cible.dataset) appliquer(audience.checked ? 'accepte' : 'refuse');
   });
 
+  // « Gérer les cookies » ouvre directement les préférences, avec le choix en cours.
   const gerer = document.querySelector<HTMLButtonElement>('[data-cookies]');
   if (gerer) {
     gerer.hidden = false;
-    gerer.addEventListener('click', () => {
-      bandeau.hidden = false;
-      bandeau.querySelector<HTMLButtonElement>('[data-choix]')!.focus();
-    });
+    gerer.addEventListener('click', personnaliser);
   }
 </script>
 
 <style>
-  /* Carte sombre posée en bas à gauche : elle ne bloque pas la lecture. Les deux boutons ont le même poids. */
-  .consentement { position: fixed; left: 24px; bottom: 24px; z-index: 50; width: min(430px, calc(100vw - 32px)); background: var(--encre); color: #fff; border-radius: 22px; padding: 24px; box-shadow: 0 30px 70px -24px rgba(21,18,31,.6); font-family: var(--ui); }
-  h2 { font: 800 18px/1.2 var(--titre); letter-spacing: -.02em; margin-bottom: 8px; }
-  p { font-size: 14.5px; line-height: 1.55; color: #DCD6E0; }
+  /* Carte sombre compacte en bas à gauche : elle ne bloque pas la lecture. « Accepter » est le seul bouton plein. */
+  .consentement { position: fixed; left: 20px; bottom: 20px; z-index: 50; width: min(420px, calc(100vw - 32px)); background: var(--encre); color: #fff; border-radius: 18px; padding: 14px 18px; box-shadow: 0 24px 60px -24px rgba(21,18,31,.6); font-family: var(--ui); font-size: 13.5px; line-height: 1.5; }
+  p { color: #DCD6E0; }
   a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
-  .choix { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
-  button { cursor: pointer; font: 700 15px var(--titre); color: #fff; background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.3); border-radius: 14px; padding: 13px 16px; transition: background .15s, border-color .15s; }
-  button:hover { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.5); }
-  @media (max-width: 700px) { .consentement { left: 16px; bottom: 16px; padding: 20px; } }
+  button { cursor: pointer; font: 700 13.5px var(--titre); border: 0; transition: background .15s, color .15s; }
+  .choix { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 12px; margin-top: 10px; }
+  .droite { display: flex; align-items: center; gap: 16px; margin-left: auto; }
+  .discret { background: none; padding: 8px 2px; color: #DCD6E0; text-decoration: underline; text-underline-offset: 3px; }
+  .discret:hover { color: #fff; }
+  .principal { background: #fff; color: var(--f1); border-radius: 11px; padding: 8px 16px; margin-left: auto; }
+  .principal:hover { background: var(--voile); }
+
+  /* ---------- préférences ---------- */
+  h2 { display: flex; align-items: center; gap: 8px; font: 800 15px/1.2 var(--titre); letter-spacing: -.02em; }
+  h2 :global(svg) { color: var(--f3); flex: none; }
+  ul { list-style: none; margin: 6px 0 0; padding: 0; }
+  li { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+  li strong { display: block; font-weight: 600; font-size: 13.5px; }
+  small { display: block; font-size: 12px; line-height: 1.4; color: #A39BA8; }
+  label { cursor: pointer; }
+  .toujours { flex: none; font-size: 12px; font-weight: 600; color: var(--f3); }
+  input[role='switch'] { flex: none; appearance: none; margin: 0; cursor: pointer; width: 36px; height: 22px; border-radius: 99px; background: rgba(255,255,255,.22); position: relative; transition: background .15s; }
+  input[role='switch']::before { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .15s; }
+  input[role='switch']:checked { background: var(--f2); }
+  input[role='switch']:checked::before { transform: translateX(14px); }
+  @media (max-width: 700px) { .consentement { left: 16px; bottom: 16px; } }
+  @media (max-width: 360px) { .consentement { padding: 14px; } .droite { gap: 12px; } .principal { padding: 8px 14px; } }
 </style>

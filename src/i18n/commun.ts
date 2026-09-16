@@ -26,11 +26,16 @@ const fr = {
   },
   consentement: {
     aria: "Cookies de mesure d'audience",
-    titre: "Mesure d'audience",
     texte: "Avec votre accord, Google Analytics dépose des cookies pour mesurer la fréquentation du site. Vous pouvez changer d'avis à tout moment depuis le bas de page.",
     plus: 'En savoir plus',
     refuser: 'Refuser',
     accepter: 'Accepter',
+    personnaliser: 'Personnaliser',
+    preferences: 'Vos préférences de cookies',
+    necessaires: { titre: 'Nécessaires', texte: 'Retiennent votre langue et vos choix.', toujours: 'Toujours actifs' },
+    audience: { titre: "Mesure d'audience", texte: 'Google Analytics compte les visites, pour nous aider à améliorer le site.' },
+    obligatoires: 'Obligatoires uniquement',
+    selection: 'Accepter la sélection',
   },
 };
 
@@ -58,11 +63,16 @@ const en: typeof fr = {
   },
   consentement: {
     aria: 'Audience measurement cookies',
-    titre: 'Audience measurement',
     texte: 'With your consent, Google Analytics sets cookies to measure how the site is used. You can change your mind at any time from the footer.',
     plus: 'Learn more',
     refuser: 'Decline',
     accepter: 'Accept',
+    personnaliser: 'Customize',
+    preferences: 'Your cookie preferences',
+    necessaires: { titre: 'Necessary', texte: 'Remember your language and your choices.', toujours: 'Always on' },
+    audience: { titre: 'Audience measurement', texte: 'Google Analytics counts visits, to help us improve the site.' },
+    obligatoires: 'Necessary only',
+    selection: 'Accept selection',
   },
 };
 
