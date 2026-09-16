@@ -5,6 +5,9 @@ import { chemin, DOMAINES, type Langue, type Page } from './i18n/routes';
 /** URL de prise de rendez-vous (Cal.com, Calendly…). Laisser vide masque le bouton. */
 export const LIEN_RDV = '';
 
+/** Identifiant Google Analytics. La balise ne se charge qu'après accord du visiteur (voir Consentement.astro). */
+export const GOOGLE_ANALYTICS = 'G-498BWV9ZH9';
+
 export const STUDIO = {
   nom: 'Moamind Solutions',
   /** Les deux moitiés du nom, pour le mot-marque. */

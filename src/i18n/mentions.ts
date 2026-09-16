@@ -57,7 +57,11 @@ const fr = {
       id: 'cookies',
       court: 'Cookies',
       titre: "Cookies et mesure d'audience",
-      paragraphes: ["Le seul cookie de ce site retient la langue choisie avec le sélecteur de langue, pendant un an. Indispensable à ce choix, il est exempté de consentement. Aucun outil de mesure d'audience ni de traçage publicitaire n'est utilisé : aucune bannière n'est donc nécessaire."],
+      paragraphes: [
+        "Un cookie retient la langue choisie avec le sélecteur de langue, pendant un an. Indispensable à ce choix, il est exempté de consentement.",
+        "Avec votre accord, le site utilise Google Analytics, service de Google Ireland Limited, pour mesurer sa fréquentation&nbsp;: pages consultées, durée des visites, type d'appareil et provenance approximative. Les cookies <code>_ga</code> et <code>_ga_*</code> sont alors conservés treize mois au plus, et les données de mesure un an au plus dans Google Analytics. Ces données peuvent être transférées aux États-Unis, dans le cadre du Data Privacy Framework. Sans votre accord, Google Analytics n'est pas chargé et aucun de ces cookies n'est déposé. Aucun traçage publicitaire n'est utilisé.",
+        "Votre choix, accepté ou refusé, est conservé six mois dans votre navigateur. Vous pouvez le modifier à tout moment avec le lien «&nbsp;Gérer les cookies&nbsp;» en bas de chaque page&nbsp;; un refus efface les cookies de mesure déjà déposés.",
+      ],
     },
   ],
 };
@@ -119,7 +123,11 @@ const en: typeof fr = {
       id: 'cookies',
       court: 'Cookies',
       titre: 'Cookies and audience measurement',
-      paragraphes: ['The only cookie on this site remembers the language chosen with the language selector, for one year. As it is strictly necessary for that choice, it is exempt from consent. No audience measurement or advertising tracking tool is used, so no consent banner is needed.'],
+      paragraphes: [
+        'One cookie remembers the language chosen with the language selector, for one year. As it is strictly necessary for that choice, it is exempt from consent.',
+        "With your consent, the site uses Google Analytics, a service of Google Ireland Limited, to measure how it is used: pages viewed, visit duration, device type and approximate location. The <code>_ga</code> and <code>_ga_*</code> cookies are then kept for thirteen months at most, and measurement data for one year at most in Google Analytics. This data may be transferred to the United States under the Data Privacy Framework. Without your consent, Google Analytics is not loaded and none of these cookies are set. No advertising tracking is used.",
+        'Your choice, whether you accept or decline, is kept in your browser for six months. You can change it at any time with the “Cookie settings” link at the bottom of every page; declining deletes any measurement cookies already set.',
+      ],
     },
   ],
 };

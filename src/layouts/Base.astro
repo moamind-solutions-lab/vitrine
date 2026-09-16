@@ -3,6 +3,7 @@ import '../styles/global.css';
 import jakarta from '@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url';
 import Entete from '../components/Entete.astro';
 import PiedDePage from '../components/PiedDePage.astro';
+import Consentement from '../components/Consentement.astro';
 import { absolu, ressource, STUDIO } from '../config';
 import commun from '../i18n/commun';
 import { DOMAINES, LANGUES, SANS_INDEX, autre, type Langue, type Page } from '../i18n/routes';
@@ -70,5 +71,6 @@ const json = donnees && JSON.stringify(donnees).replace(/</g, '\\u003c');
     <Entete langue={langue} page={page} slug={slug} />
     <main id="contenu"><slot /></main>
     <PiedDePage langue={langue} page={page} slug={slug} />
+    <Consentement langue={langue} />
   </body>
 </html>

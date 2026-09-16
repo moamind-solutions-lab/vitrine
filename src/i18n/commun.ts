@@ -22,6 +22,15 @@ const fr = {
     contact: 'Contact',
     base: 'Basé à Bordeaux, au travail partout',
     mentions: 'Mentions légales',
+    cookies: 'Gérer les cookies',
+  },
+  consentement: {
+    aria: "Cookies de mesure d'audience",
+    titre: "Mesure d'audience",
+    texte: "Avec votre accord, Google Analytics dépose des cookies pour mesurer la fréquentation du site. Vous pouvez changer d'avis à tout moment depuis le bas de page.",
+    plus: 'En savoir plus',
+    refuser: 'Refuser',
+    accepter: 'Accepter',
   },
 };
 
@@ -45,6 +54,15 @@ const en: typeof fr = {
     contact: 'Contact',
     base: 'Based in Bordeaux, working everywhere',
     mentions: 'Legal notice',
+    cookies: 'Cookie settings',
+  },
+  consentement: {
+    aria: 'Audience measurement cookies',
+    titre: 'Audience measurement',
+    texte: 'With your consent, Google Analytics sets cookies to measure how the site is used. You can change your mind at any time from the footer.',
+    plus: 'Learn more',
+    refuser: 'Decline',
+    accepter: 'Accept',
   },
 };
 

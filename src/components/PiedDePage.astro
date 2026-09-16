@@ -24,6 +24,8 @@ const c = commun[langue];
         ))}
       </nav>
       <a href={lien('mentions', langue)}>{c.pied.mentions}</a>
+      <!-- Rouvre le bandeau de consentement : sans JavaScript, rien à régler, le bouton reste masqué. -->
+      <button class="cookies" type="button" data-cookies hidden>{c.pied.cookies}</button>
     </span>
   </div>
 </footer>
@@ -38,6 +40,8 @@ const c = commun[langue];
   a:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
   .bas { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,.1); padding-top: 22px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: #8F8896; font-size: 13px; }
   .droite { display: flex; gap: 22px; flex-wrap: wrap; }
+  .cookies { background: none; border: 0; padding: 0; cursor: pointer; color: inherit; font-size: inherit; }
+  .cookies:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
   .langues-pied a[aria-current='true'] { color: #fff; font-weight: 700; }
   @media (max-width: 700px) { .pied { grid-template-columns: 1fr; } }
 </style>

@@ -1,0 +1,101 @@
+---
+/**
+ * Bandeau de consentement aux cookies de mesure d'audience (recommandations CNIL) :
+ * Google Analytics ne se charge qu'après « Accepter », refuser est aussi simple qu'accepter,
+ * le choix est retenu six mois et se modifie à tout moment depuis le pied de page.
+ */
+import { GOOGLE_ANALYTICS, lien } from '../config';
+import commun from '../i18n/commun';
+import type { Langue } from '../i18n/routes';
+interface Props { langue: Langue }
+const { langue } = Astro.props;
+const t = commun[langue].consentement;
+---
+<section class="consentement" aria-label={t.aria} data-ga={GOOGLE_ANALYTICS} hidden>
+  <h2>{t.titre}</h2>
+  <p>{t.texte} <a href={`${lien('mentions', langue)}#cookies`}>{t.plus}</a></p>
+  <div class="choix">
+    <button type="button" data-choix="refuse">{t.refuser}</button>
+    <button type="button" data-choix="accepte">{t.accepter}</button>
+  </div>
+</section>
+
+<script>
+  type Choix = 'accepte' | 'refuse';
+  const CLE = 'consentement-cookies';
+  /** Durée de validité du choix, acceptation comme refus. */
+  const SIX_MOIS = 182 * 24 * 3600 * 1000;
+  /** Durée de vie maximale des cookies Google Analytics recommandée par la CNIL. */
+  const TREIZE_MOIS = 395 * 24 * 3600;
+
+  const bandeau = document.querySelector<HTMLElement>('.consentement')!;
+  const id = bandeau.dataset.ga!;
+  const w = window as unknown as Record<string, unknown> & { dataLayer: unknown[] };
+
+  const lire = (): Choix | null => {
+    try {
+      const { choix, date } = JSON.parse(localStorage.getItem(CLE) ?? 'null') ?? {};
+      return (choix === 'accepte' || choix === 'refuse') && Date.now() - date < SIX_MOIS ? choix : null;
+    } catch { return null; }
+  };
+  const retenir = (choix: Choix) => {
+    try { localStorage.setItem(CLE, JSON.stringify({ choix, date: Date.now() })); } catch {}
+  };
+
+  const charger = () => {
+    w[`ga-disable-${id}`] = false;
+    if (document.querySelector('script[data-gtag]')) return;
+    w.dataLayer = w.dataLayer || [];
+    // gtag passe l'objet `arguments` lui-même : un tableau ne serait pas reconnu.
+    function gtag(..._: unknown[]) { w.dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', id, { cookie_expires: TREIZE_MOIS });
+    const script = Object.assign(document.createElement('script'), { async: true, src: `https://www.googletagmanager.com/gtag/js?id=${id}` });
+    script.dataset.gtag = '';
+    document.head.append(script);
+  };
+
+  /** Coupe la mesure et efface les cookies _ga, posés sur le domaine principal (ex. .moamind-solutions.fr). */
+  const retirer = () => {
+    w[`ga-disable-${id}`] = true;
+    const parties = location.hostname.split('.');
+    const domaines = [''].concat(parties.map((_, i) => `; domain=.${parties.slice(i).join('.')}`));
+    document.cookie.split('; ').map((c) => c.split('=')[0]!).filter((nom) => nom.startsWith('_ga')).forEach((nom) => {
+      domaines.forEach((d) => { document.cookie = `${nom}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${d}`; });
+    });
+  };
+
+  const choix = lire();
+  if (choix === 'accepte') charger();
+  else if (!choix) bandeau.hidden = false;
+
+  bandeau.addEventListener('click', (evenement) => {
+    const bouton = (evenement.target as HTMLElement).closest<HTMLButtonElement>('[data-choix]');
+    if (!bouton) return;
+    const nouveau = bouton.dataset.choix as Choix;
+    retenir(nouveau);
+    if (nouveau === 'accepte') charger(); else retirer();
+    bandeau.hidden = true;
+  });
+
+  const gerer = document.querySelector<HTMLButtonElement>('[data-cookies]');
+  if (gerer) {
+    gerer.hidden = false;
+    gerer.addEventListener('click', () => {
+      bandeau.hidden = false;
+      bandeau.querySelector<HTMLButtonElement>('[data-choix]')!.focus();
+    });
+  }
+</script>
+
+<style>
+  /* Carte sombre posée en bas à gauche : elle ne bloque pas la lecture. Les deux boutons ont le même poids. */
+  .consentement { position: fixed; left: 24px; bottom: 24px; z-index: 50; width: min(430px, calc(100vw - 32px)); background: var(--encre); color: #fff; border-radius: 22px; padding: 24px; box-shadow: 0 30px 70px -24px rgba(21,18,31,.6); font-family: var(--ui); }
+  h2 { font: 800 18px/1.2 var(--titre); letter-spacing: -.02em; margin-bottom: 8px; }
+  p { font-size: 14.5px; line-height: 1.55; color: #DCD6E0; }
+  a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+  .choix { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+  button { cursor: pointer; font: 700 15px var(--titre); color: #fff; background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.3); border-radius: 14px; padding: 13px 16px; transition: background .15s, border-color .15s; }
+  button:hover { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.5); }
+  @media (max-width: 700px) { .consentement { left: 16px; bottom: 16px; padding: 20px; } }
+</style>
