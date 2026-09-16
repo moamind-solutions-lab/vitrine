@@ -4,7 +4,7 @@ import jakarta from '@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-s
 import Entete from '../components/Entete.astro';
 import PiedDePage from '../components/PiedDePage.astro';
 import Consentement from '../components/Consentement.astro';
-import { absolu, ressource, STUDIO } from '../config';
+import { absolu, GOOGLE_ANALYTICS, ressource, STUDIO } from '../config';
 import commun from '../i18n/commun';
 import { DOMAINES, LANGUES, SANS_INDEX, autre, type Langue, type Page } from '../i18n/routes';
 
@@ -32,12 +32,23 @@ const version = (l: Langue) => absolu(page!, l, slug);
 const canonique = page ? version(langue) : undefined;
 const image = new URL(ressource('/og.png'), DOMAINES[langue]);
 /** `<` échappé : un texte contenant `</script>` ne peut pas fermer la balise. */
+/** Balise Google officielle, inerte (type text/plain) : Consentement.astro l'exécute après accord du visiteur. Cookies limités à 13 mois (395 jours), durée maximale recommandée par la CNIL. */
+const balise = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${GOOGLE_ANALYTICS}', { cookie_expires: 34128000 });
+    `;
 const json = donnees && JSON.stringify(donnees).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
 <html lang={langue}>
   <head>
+    <!-- Google tag (gtag.js) : inactive tant que le visiteur n'a pas accepté la mesure d'audience. -->
+    <script is:inline type="text/plain" data-consentement async src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS}`}></script>
+    <script is:inline type="text/plain" data-consentement set:html={balise} />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{titreComplet}</title>

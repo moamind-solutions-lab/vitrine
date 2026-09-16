@@ -50,12 +50,10 @@ const t = commun[langue].consentement;
   const CLE = 'consentement-cookies';
   /** Durée de validité du choix, acceptation comme refus. */
   const SIX_MOIS = 182 * 24 * 3600 * 1000;
-  /** Durée de vie maximale des cookies Google Analytics recommandée par la CNIL. */
-  const TREIZE_MOIS = 395 * 24 * 3600;
 
   const bandeau = document.querySelector<HTMLElement>('.consentement')!;
   const id = bandeau.dataset.ga!;
-  const w = window as unknown as Record<string, unknown> & { dataLayer: unknown[] };
+  const w = window as unknown as Record<string, unknown>;
 
   const lire = (): Choix | null => {
     try {
@@ -67,17 +65,15 @@ const t = commun[langue].consentement;
     try { localStorage.setItem(CLE, JSON.stringify({ choix, date: Date.now() })); } catch {}
   };
 
+  /** Exécute la balise Google posée inerte dans <head> (Base.astro) : une copie en text/javascript s'exécute. */
   const charger = () => {
     w[`ga-disable-${id}`] = false;
-    if (document.querySelector('script[data-gtag]')) return;
-    w.dataLayer = w.dataLayer || [];
-    // gtag passe l'objet `arguments` lui-même : un tableau ne serait pas reconnu.
-    function gtag(..._: unknown[]) { w.dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', id, { cookie_expires: TREIZE_MOIS });
-    const script = Object.assign(document.createElement('script'), { async: true, src: `https://www.googletagmanager.com/gtag/js?id=${id}` });
-    script.dataset.gtag = '';
-    document.head.append(script);
+    document.querySelectorAll<HTMLScriptElement>('script[type="text/plain"][data-consentement]').forEach((inerte) => {
+      const script = document.createElement('script');
+      if (inerte.src) Object.assign(script, { async: true, src: inerte.src });
+      else script.textContent = inerte.textContent;
+      inerte.replaceWith(script);
+    });
   };
 
   /** Coupe la mesure et efface les cookies _ga, posés sur le domaine principal (ex. .moamind-solutions.fr). */
