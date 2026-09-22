@@ -34,3 +34,8 @@ test('un navigateur déjà dans la langue du domaine n’est pas redirigé', () 
   assert.match(htaccess('fr'), /Accept-Language\} \^fr \[NC\]\n {2}RewriteRule \^ - \[S=/);
   assert.match(htaccess('en'), /Accept-Language\} !\^fr \[NC\]\n {2}RewriteRule \^ - \[S=/);
 });
+
+test('les textes de Pil’Poil sous /legal/ sont tenus hors des moteurs de recherche', () => {
+  assert.match(htaccess('fr'), /m#\^\/legal\/#">\n {4}Header set X-Robots-Tag "noindex, nofollow"/);
+  assert.doesNotMatch(htaccess('en'), /\/legal\//);
+});

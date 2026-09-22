@@ -71,7 +71,12 @@ ${regles.join('\n')}
   <If "%{REQUEST_URI} =~ m#^/_astro/#">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </If>
-  # Les pages sont revalidées à chaque visite : une mise en ligne se voit tout de suite.
+${langue === 'fr' ? `  # Textes de l'application Pil'Poil (public/legal/pilpoil/), donnés à l'App Store : en ligne,
+  # mais reliés à aucune page du site et tenus hors des moteurs de recherche.
+  <If "%{REQUEST_URI} =~ m#^/legal/#">
+    Header set X-Robots-Tag "noindex, nofollow"
+  </If>
+` : ''}  # Les pages sont revalidées à chaque visite : une mise en ligne se voit tout de suite.
   <FilesMatch "\\.html$">
     Header set Cache-Control "no-cache"
   </FilesMatch>
