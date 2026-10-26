@@ -21,6 +21,7 @@ function deliver($to, $subject, $body, $replyTo = null) {
   return true;
 }
 function domain_accepts_mail($domain) { return $domain !== 'nowhere.example'; }
+define('STATE_DIR', '/tmp/state');
 require __DIR__ . '/envoi.php';
 `);
 });
@@ -113,6 +114,33 @@ test('the counters keep no raw IP address on disk', async () => {
     assert.doesNotMatch(path, /203\.0\.113\.7/);
     assert.doesNotMatch(php.readFileAsText(path), /203\.0\.113\.7/);
   }
+});
+
+test('IPv6 visitors rotating within their /64 are counted as one', async () => {
+  for (let i = 1; i <= 5; i++) await post(`fraud${i}@yopmail.com`, { ip: `2001:db8:1:2::${i}` });
+  assert.equal(mails().length, 1);
+});
+
+test('no more than ten incident mails leave per day, whatever the number of visitors', async () => {
+  for (let visitor = 1; visitor <= 12; visitor++) {
+    for (let i = 1; i <= 5; i++) await post(`fraud${i}@yopmail.com`, { ip: `192.0.2.${visitor}` });
+  }
+  assert.equal(mails().length, 10);
+});
+
+test('an incomplete message is refused before the address is checked', async () => {
+  const response = await php.run({
+    scriptPath: '/www/test.php',
+    method: 'POST',
+    body: new TextEncoder().encode(new URLSearchParams({ nom: 'Camille', email: 'fraud@yopmail.com', message: '' }).toString()),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json' },
+  });
+  assert.deepEqual(JSON.parse(response.text), { ok: false });
+});
+
+test('counters are kept in the account home, outside both web roots', () => {
+  assert.match(envoi('fr', RECIPIENT), /define\('STATE_DIR', dirname\(__DIR__, 1\) \. '\/moamind-contact'\)/);
+  assert.match(envoi('en', RECIPIENT), /define\('STATE_DIR', dirname\(__DIR__, 2\) \. '\/moamind-contact'\)/);
 });
 
 test('incident recipient is the technical address', () => {

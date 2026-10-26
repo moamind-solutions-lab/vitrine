@@ -41,6 +41,10 @@ const SITE = ${php(site)};
 // Refused addresses from one visitor, within the window, that trigger the incident alert.
 const ALERT_THRESHOLD = 5;
 const ALERT_WINDOW = 86400;
+// Incident mails per window, all visitors together: rotating addresses cannot flood the inbox.
+const ALERT_DAILY_CAP = 10;
+// Counters live in the account's home, outside the web roots: public_html/ and public_html/en/ share it.
+if (!defined('STATE_DIR')) define('STATE_DIR', dirname(__DIR__, ${langue === 'fr' ? 1 : 2}) . '/moamind-contact');
 const CONTACT = ${php(domaine + chemin('contact', langue))};
 const MERCI = ${php(domaine + chemin('merci', langue))};
 const CHAMPS = [
@@ -96,31 +100,80 @@ function email_refused($email) {
   return is_disposable($domain) || !domain_accepts_mail($domain);
 }
 
-/**
- * Records a refused address for this visitor and returns ['count' => …, 'emails' => […]] for the window.
- * The visitor is known by a salted hash of their IP address only; expired counters are erased.
- */
-function record_rejection($email) {
-  $dir = sys_get_temp_dir() . '/moamind-contact';
-  if (!is_dir($dir)) @mkdir($dir, 0700, true);
-  $saltFile = $dir . '/salt';
-  if (!is_file($saltFile)) file_put_contents($saltFile, bin2hex(random_bytes(32)));
-  foreach (glob($dir . '/*.json') ?: [] as $old) {
-    if (filemtime($old) < time() - ALERT_WINDOW) @unlink($old);
-  }
-  $visitor = hash_hmac('sha256', $_SERVER['REMOTE_ADDR'] ?? '', (string) file_get_contents($saltFile));
-  $handle = fopen($dir . '/' . $visitor . '.json', 'c+');
-  if (!$handle) return ['count' => 0, 'emails' => []];
+/** STATE_DIR, created private to this account; null if it is missing, a link, or someone else's. */
+function state_dir() {
+  if (!is_dir(STATE_DIR) && !is_link(STATE_DIR)) @mkdir(STATE_DIR, 0700, true);
+  if (is_link(STATE_DIR) || !is_dir(STATE_DIR) || (function_exists('posix_getuid') && fileowner(STATE_DIR) !== posix_getuid())) return null;
+  return STATE_DIR;
+}
+
+/** Opens a state file for update under an exclusive lock, refusing links. */
+function open_state($path) {
+  if (is_link($path)) return null;
+  $handle = fopen($path, 'c+');
+  if (!$handle) return null;
   flock($handle, LOCK_EX);
-  $entry = json_decode((string) stream_get_contents($handle), true);
-  if (!is_array($entry) || $entry['first'] < time() - ALERT_WINDOW) $entry = ['first' => time(), 'count' => 0, 'emails' => []];
-  $entry['count']++;
-  $entry['emails'] = array_slice([...$entry['emails'], mb_substr($email, 0, 254)], -20);
+  return $handle;
+}
+
+/** Reads, transforms and writes back a locked JSON state file; returns the new value, or null. */
+function update_state($path, $transform) {
+  $handle = open_state($path);
+  if (!$handle) return null;
+  $value = $transform(json_decode((string) stream_get_contents($handle), true));
   ftruncate($handle, 0);
   rewind($handle);
-  fwrite($handle, json_encode($entry));
+  fwrite($handle, json_encode($value));
   fclose($handle);
-  return $entry;
+  return $value;
+}
+
+/** The visitor's network: the IPv4 address, or the /64 prefix an IPv6 visitor can rotate within. */
+function visitor_network() {
+  $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+  $packed = @inet_pton($ip);
+  return $packed !== false && strlen($packed) === 16 ? bin2hex(substr($packed, 0, 8)) . '::/64' : $ip;
+}
+
+/**
+ * Records a refused address for this visitor and returns ['count' => …, 'emails' => […]] for the window.
+ * The visitor is known by a salted hash of their network only; expired counters are erased now and then.
+ */
+function record_rejection($email) {
+  $none = ['count' => 0, 'emails' => []];
+  $dir = state_dir();
+  if ($dir === null) return $none;
+  $saltFile = $dir . '/salt';
+  if (!is_file($saltFile) && !is_link($saltFile) && ($new = @fopen($saltFile, 'x'))) {
+    fwrite($new, bin2hex(random_bytes(32)));
+    fclose($new);
+  }
+  if (is_link($saltFile) || !is_file($saltFile)) return $none;
+  if (random_int(1, 20) === 1) {
+    foreach (glob($dir . '/*.json') ?: [] as $old) {
+      if (filemtime($old) < time() - ALERT_WINDOW) @unlink($old);
+    }
+  }
+  $visitor = hash_hmac('sha256', visitor_network(), (string) file_get_contents($saltFile));
+  return update_state($dir . '/' . $visitor . '.json', function ($entry) use ($email) {
+    if (!is_array($entry) || ($entry['first'] ?? 0) < time() - ALERT_WINDOW) $entry = ['first' => time(), 'count' => 0, 'emails' => []];
+    $entry['count']++;
+    $entry['emails'] = array_slice([...$entry['emails'], mb_substr($email, 0, 254)], -20);
+    return $entry;
+  }) ?? $none;
+}
+
+/** True while fewer than ALERT_DAILY_CAP incident mails left in the window; counts this one. */
+function alert_allowed() {
+  $dir = state_dir();
+  if ($dir === null) return false;
+  $allowed = false;
+  update_state($dir . '/alerts', function ($times) use (&$allowed) {
+    $recent = array_values(array_filter(is_array($times) ? $times : [], fn($t) => is_int($t) && $t >= time() - ALERT_WINDOW));
+    $allowed = count($recent) < ALERT_DAILY_CAP;
+    return $allowed ? [...$recent, time()] : $recent;
+  });
+  return $allowed;
 }
 
 /** Tells INCIDENT_RECIPIENT that someone keeps trying to write with fake addresses. */
@@ -160,12 +213,13 @@ foreach (CHAMPS as [$nom, , $max]) $champs[$nom] = ligne($nom, $max);
 if ($champs['echeance'] === '') $champs['echeance'] = ${php(contact.fr.formulaire.echeance.defaut)};
 $message = is_string($_POST['message'] ?? null) ? trim(mb_substr(str_replace(["\\r\\n", "\\r"], "\\n", $_POST['message']), 0, 10000)) : '';
 
+// Cheap checks first: only a complete message costs a DNS lookup.
+if ($champs['nom'] === '' || $message === '' || DESTINATAIRE === '') repondre(false);
 if (email_refused($champs['email'])) {
   $rejections = record_rejection($champs['email']);
-  if ($rejections['count'] === ALERT_THRESHOLD) alert_incident($rejections, $champs['nom']);
+  if ($rejections['count'] === ALERT_THRESHOLD && alert_allowed()) alert_incident($rejections, $champs['nom']);
   repondre(false, 'email');
 }
-if ($champs['nom'] === '' || $message === '' || DESTINATAIRE === '') repondre(false);
 
 $lignes = ['Nouveau projet reçu par le formulaire de contact du ${site}.', ''];
 foreach (CHAMPS as [$nom, $intitule]) {

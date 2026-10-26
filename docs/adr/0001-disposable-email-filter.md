@@ -23,10 +23,14 @@ quand quelqu'un insiste.
 - Les relais (Apple « Masquer mon adresse », DuckDuckGo, Firefox Relay, Proton
   SimpleLogin, addy.io) restent acceptés : ils mènent à une vraie boîte et
   permettent de répondre.
-- L'alerte part au 5ᵉ refus en 24 heures d'une même IP, une seule fois. Les
-  compteurs sont stockés dans le dossier temporaire privé du compte (hors
-  `public_html`), sous une empreinte salée de l'IP, et expirent après 24 heures
+- L'alerte part au 5ᵉ refus en 24 heures d'une même IP (d'un même préfixe /64
+  en IPv6, qu'un fraudeur peut faire tourner), une seule fois, et dix alertes au
+  plus par jour au total. Les compteurs sont stockés dans `~/moamind-contact/`,
+  hors des dossiers publiés, dossier refusé s'il est un lien ou appartient à un
+  autre compte, sous une empreinte salée de l'IP, et expirent après 24 heures
   (RGPD : minimisation).
+- Le nom et le message sont vérifiés avant l'adresse : seul un message complet
+  coûte une requête DNS.
 
 ## Conséquences
 

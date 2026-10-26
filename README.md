@@ -147,8 +147,10 @@ sous-domaines) et un domaine sans serveur de mail. La page affiche alors
 « Essayez avec une autre adresse mail » sous le champ. Au **5ᵉ refus du même
 visiteur en 24 heures**, un mail part une seule fois vers
 `technical-incident@moamind-solutions.com` (constante `INCIDENT_RECIPIENT`) avec
-les adresses essayées, le nom saisi et l'IP. Le visiteur n'est connu sur le
-serveur que par une empreinte salée de son IP, effacée après 24 heures.
+les adresses essayées, le nom saisi et l'IP (dix alertes par jour au plus, tous
+visiteurs confondus). Le visiteur n'est connu sur le serveur que par une
+empreinte salée de son IP (son préfixe /64 en IPv6), effacée après 24 heures,
+dans `~/moamind-contact/`, hors des dossiers publiés.
 
 La liste (`src/data/disposable-domains.txt`, environ 214 000 domaines) fusionne
 neuf listes publiques. Pour la rafraîchir, puis la committer :
