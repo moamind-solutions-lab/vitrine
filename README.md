@@ -139,3 +139,28 @@ est public, elle n'est écrite que dans `dist/`. Sans ce secret, la publication
 échoue plutôt que de mettre en ligne un formulaire qui n'enverrait rien. En
 local, sans la variable, `envoi.php` refuse tous les messages, et `npm run dev`
 n'exécute pas le PHP : l'envoi ne se teste qu'en ligne.
+
+### Adresses jetables
+
+`envoi.php` refuse une adresse mal formée, un domaine jetable (ou l'un de ses
+sous-domaines) et un domaine sans serveur de mail. La page affiche alors
+« Essayez avec une autre adresse mail » sous le champ. Au **5ᵉ refus du même
+visiteur en 24 heures**, un mail part une seule fois vers
+`technical-incident@moamind-solutions.com` (constante `INCIDENT_RECIPIENT`) avec
+les adresses essayées, le nom saisi et l'IP. Le visiteur n'est connu sur le
+serveur que par une empreinte salée de son IP, effacée après 24 heures.
+
+La liste (`src/data/disposable-domains.txt`, environ 214 000 domaines) fusionne
+neuf listes publiques. Pour la rafraîchir, puis la committer :
+
+```bash
+npm run update-disposable-domains
+```
+
+Le script retire les suffixes publics (`edu.pl`, `co.id`…), qui bloqueraient des
+registres entiers, et les fournisseurs protégés (`PROTECTED` : Gmail, Orange,
+relais Apple ou DuckDuckGo…). Il ajoute les suffixes gratuits `BLOCKED_SUFFIXES`
+(`web.id`, `my.id`, `biz.id`) et les domaines signalés à la main (`EXTRA`), le
+tout dans [`scripts/disposable-domains.mjs`](scripts/disposable-domains.mjs).
+`npm test` exécute le vrai `envoi.php` dans un PHP WebAssembly
+(`@php-wasm/node`), avec l'envoi de mail et le DNS simulés.
