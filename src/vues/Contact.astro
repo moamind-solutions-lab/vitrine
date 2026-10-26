@@ -61,6 +61,8 @@ const v = textes.fr.formulaire;
           <p class="champ">
             <label for="email">{t.formulaire.email.libelle} <em aria-hidden="true">*</em></label>
             <input class="entree" id="email" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder={t.formulaire.email.exemple} />
+            <!-- Shown when envoi.php refuses the address (disposable, unknown domain): by the script, or by the #email-error anchor without JavaScript. -->
+            <span class="email-error" id="email-error" role="alert">{t.formulaire.email.erreur}</span>
           </p>
 
           <fieldset class="champ">
@@ -133,17 +135,30 @@ const v = textes.fr.formulaire;
     // Envoi en arrière-plan : en cas d'échec, le message saisi reste là. Le bouton indique qu'il travaille.
     const bouton = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
     const erreur = document.getElementById('erreur-envoi')!;
+    const email = document.getElementById('email') as HTMLInputElement;
+    const emailError = document.getElementById('email-error')!;
+    const showEmailError = (visible: boolean) => {
+      emailError.classList.toggle('visible', visible);
+      email.toggleAttribute('aria-invalid', visible);
+      if (visible) email.setAttribute('aria-describedby', 'email-error');
+      else email.removeAttribute('aria-describedby');
+    };
+    email.addEventListener('input', () => showEmailError(false));
     const libelle = bouton.textContent;
     form.addEventListener('submit', async (evenement) => {
       evenement.preventDefault();
       bouton.disabled = true;
       bouton.textContent = bouton.dataset.envoi ?? '…';
       erreur.classList.remove('visible');
+      showEmailError(false);
       const reponse = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } }).catch(() => null);
       if (reponse?.ok) return location.assign(form.dataset.merci!);
       bouton.disabled = false;
       bouton.textContent = libelle;
-      erreur.classList.add('visible');
+      const resultat = await reponse?.json().catch(() => null);
+      if (resultat?.reason !== 'email') return erreur.classList.add('visible');
+      showEmailError(true);
+      email.focus();
     });
   }
 </script>
@@ -192,6 +207,8 @@ const v = textes.fr.formulaire;
   /* Message d'échec : masqué, sauf après un envoi refusé (classe posée par le script, ou ancre sans JavaScript). */
   .erreur-envoi { display: none; margin: 0; padding: 14px 16px; border-radius: 14px; background: #FDECEA; color: #8A1F11; font: 600 14px/1.5 var(--ui); text-wrap: balance; }
   .erreur-envoi.visible, .erreur-envoi:target { display: block; }
+  .email-error { display: none; font: 600 13px/1.5 var(--ui); color: #8A1F11; }
+  .email-error.visible, .email-error:target { display: block; }
 
   /* Sous 1360 px, la colonne de gauche est trop étroite pour un titre à pleine taille : on passe sur une colonne. */
   @media (max-width: 1360px) {
