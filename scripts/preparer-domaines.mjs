@@ -9,6 +9,7 @@ import { join, relative, resolve } from 'node:path';
 import { DOMAINES, SANS_INDEX, chemin } from '../src/i18n/routes.ts';
 import { htaccess } from './htaccess.mjs';
 import { envoi } from './envoi.mjs';
+import { disposableDomainsPhp, readList } from './disposable-domains.mjs';
 
 const DIST = resolve(import.meta.dirname, '../dist');
 const EN = join(DIST, 'en');
@@ -50,5 +51,8 @@ if (!destinataire && process.env.CI) throw new Error('Secret FORMULAIRE_DESTINAT
 if (!destinataire) console.warn('FORMULAIRE_DESTINATAIRE absent : envoi.php refusera tous les messages.');
 writeFileSync(join(DIST, 'envoi.php'), envoi('fr', destinataire));
 writeFileSync(join(EN, 'envoi.php'), envoi('en', destinataire));
+// The disposable domains envoi.php refuses, next to it on each domain.
+const disposable = disposableDomainsPhp(readList());
+for (const dossier of [DIST, EN]) writeFileSync(join(dossier, 'disposable-domains.php'), disposable);
 
 console.log(`Domaines prêts : ${adresses.length} pages dans le plan du site anglais, .htaccess générés.`);
