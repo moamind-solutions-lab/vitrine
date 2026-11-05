@@ -146,7 +146,10 @@ export const produits: Produit[] = [
     ],
     icones: ['eclair', 'cloche', 'coeur'],
     suivant: 'teamago',
-    magasins: { googlePlay: 'https://play.google.com/store/apps/details?id=fr.moamind.pilpoil' },
+    magasins: {
+      appStore: 'https://apps.apple.com/fr/app/pilpoil/id6813862155',
+      googlePlay: 'https://play.google.com/store/apps/details?id=fr.moamind.pilpoil',
+    },
     textes: {
       fr: {
         baseline: 'Le réseau des animaux perdus et retrouvés',
