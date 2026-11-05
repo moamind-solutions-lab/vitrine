@@ -18,13 +18,17 @@ const fr = {
     filAria: "Fil d'Ariane",
     etiquette: 'Étude de cas',
     fiche: { domaine: 'Domaine', plateforme: 'Plateforme' },
-    /** Badges des magasins, inactifs tant que les applications ne sont pas publiées : petite ligne, grande ligne. */
+    /** Badges des magasins, inactifs tant que l'application n'y est pas publiée : petite ligne, grande ligne. */
     magasins: {
       appStore: { avant: 'Télécharger dans', nom: "l'App Store" },
       googlePlay: { avant: 'Télécharger dans', nom: 'Google Play' },
       /** Le bandeau posé sur chaque badge, et ce que lisent les lecteurs d'écran à la place des badges. */
       ruban: 'Bientôt',
-      bientot: "L'application sera bientôt disponible sur l'App Store et Google Play.",
+      bientot: {
+        tous: "L'application sera bientôt disponible sur l'App Store et Google Play.",
+        appStore: "L'application sera bientôt disponible sur l'App Store.",
+        googlePlay: "L'application sera bientôt disponible sur Google Play.",
+      },
     },
     ecranPrincipal: 'écran principal',
     depart: 'Le point de départ',
@@ -58,7 +62,11 @@ const en: typeof fr = {
       appStore: { avant: 'Download on the', nom: 'App Store' },
       googlePlay: { avant: 'Get it on', nom: 'Google Play' },
       ruban: 'Coming soon',
-      bientot: 'The app will soon be available on the App Store and Google Play.',
+      bientot: {
+        tous: 'The app will soon be available on the App Store and Google Play.',
+        appStore: 'The app will soon be available on the App Store.',
+        googlePlay: 'The app will soon be available on Google Play.',
+      },
     },
     ecranPrincipal: 'main screen',
     depart: 'Where it started',
