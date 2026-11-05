@@ -15,11 +15,12 @@ l'utilisateur : le message « Essayez avec une autre adresse mail » s'affiche s
 le site français, « Try another email address » sur le site anglais, et l'alerte
 arrive sur technical-incident@moamind-solutions.com au 5ᵉ essai.
 
-## 2026-11-05 — Lien Google Play de Pil'Poil
+## 2026-11-05 — Liens Google Play et App Store de Pil'Poil
 
-L'application Pil'Poil est publiée sur Google Play. Sur son étude de cas, le
-badge Google Play devient un lien vers
-https://play.google.com/store/apps/details?id=fr.moamind.pilpoil, à pleine
-opacité et sans le bandeau « Bientôt ». Le badge App Store reste inactif. Les
+L'application Pil'Poil est publiée sur Google Play et l'App Store. Sur son
+étude de cas, les deux badges deviennent des liens, à pleine opacité et sans le
+bandeau « Bientôt » :
+https://play.google.com/store/apps/details?id=fr.moamind.pilpoil et
+https://apps.apple.com/fr/app/pilpoil/id6813862155. Les
 URL des magasins se renseignent par produit (`magasins` dans
 `src/data/produits.ts`) ; un test vérifie leur forme.
