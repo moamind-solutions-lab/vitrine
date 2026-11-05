@@ -56,3 +56,14 @@ test('aucun texte anglais ne parle à la première personne du studio ni de prod
 test('l’accueil ne montre aucun écran portant un nom d’application', () => {
   for (const e of [...eventail, ...rangee]) assert.ok(!INTERDITS_ACCUEIL.includes(`${e.projet}/${e.fichier}`), `${e.projet}/${e.fichier}`);
 });
+
+test('les liens des magasins pointent vers la fiche officielle de l’application', () => {
+  const pilpoil = produits.find((p) => p.slug === 'pilpoil');
+  assert.equal(pilpoil.magasins?.googlePlay, 'https://play.google.com/store/apps/details?id=fr.moamind.pilpoil');
+  assert.equal(pilpoil.magasins?.appStore, 'https://apps.apple.com/fr/app/pilpoil/id6813862155');
+  for (const p of produits) {
+    const { appStore, googlePlay } = p.magasins ?? {};
+    if (appStore) assert.match(appStore, /^https:\/\/apps\.apple\.com\/[a-z]{2}\/app\/[\w-]+\/id\d+$/, p.slug);
+    if (googlePlay) assert.match(googlePlay, /^https:\/\/play\.google\.com\/store\/apps\/details\?id=[\w.]+$/, p.slug);
+  }
+});

@@ -33,6 +33,8 @@ export type Produit = {
   ecrans: EcranEtape[];
   icones: Icone[];
   suivant: string;
+  /** Store listing URLs, set once the app is published there. Without one, the badge shows "coming soon". */
+  magasins?: { appStore?: string; googlePlay?: string };
   textes: Record<Langue, TextesProduit>;
 };
 
@@ -144,6 +146,10 @@ export const produits: Produit[] = [
     ],
     icones: ['eclair', 'cloche', 'coeur'],
     suivant: 'teamago',
+    magasins: {
+      appStore: 'https://apps.apple.com/fr/app/pilpoil/id6813862155',
+      googlePlay: 'https://play.google.com/store/apps/details?id=fr.moamind.pilpoil',
+    },
     textes: {
       fr: {
         baseline: 'Le réseau des animaux perdus et retrouvés',
