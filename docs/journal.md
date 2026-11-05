@@ -24,3 +24,10 @@ https://play.google.com/store/apps/details?id=fr.moamind.pilpoil et
 https://apps.apple.com/fr/app/pilpoil/id6813862155. Les
 URL des magasins se renseignent par produit (`magasins` dans
 `src/data/produits.ts`) ; un test vérifie leur forme.
+
+## 2026-11-05 — Liens des magasins de Pil'Poil : publiés en ligne
+
+Publié sur moamind-solutions.fr et moamind-solutions.com (PR #3, déploiement
+réussi). Vérifié sur les pages en ligne : les badges App Store et Google Play de
+l'étude Pil'Poil pointent vers les fiches officielles. Validé par l'utilisateur
+en local avant la fusion.
